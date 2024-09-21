@@ -106,6 +106,5 @@ while True:
 for player in players_objects:
     score_list.append(player.throw())
 
-
 print(score_list)
 print(players_list)
