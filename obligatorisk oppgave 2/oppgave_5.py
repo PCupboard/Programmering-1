@@ -15,6 +15,7 @@ players_list = []
 players_objects = []
 score_list = []
 
+
 class Player:
     def __init__(self,
                  name: str,
@@ -92,6 +93,9 @@ while True:
         if player_throw_int in range(len(players_objects)):
             score_list.append(players_objects[player_throw_int].throw())
 
+            player_first_throw = players_list.pop(player_throw_int)
+            players_list.insert(0, player_first_throw)
+
             players_objects.pop(player_throw_int)
             break
 
@@ -99,14 +103,9 @@ while True:
             print("Ingen spillere har dette nummeret, prøv igjen.\n")
             continue
 
-
 for player in players_objects:
     score_list.append(player.throw())
 
-print(score_list)
 
-# TODO 21.09.2024:
-# Gjør slik at det eksisterer to lister, en med poeng og en med spillere. (poeng listen er ferdig rett over kommentarene)
-# Når brukeren velger hvilken spiller som skal kaste først,
-# så må du forskyve den valgte spilleren først i 'players_list'.
-# 'score_list' vil da matche 'players_list' og jeg kan ha det gøy med prints og animasjoner til dart kastene.
+print(score_list)
+print(players_list)
