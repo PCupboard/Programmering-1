@@ -23,29 +23,30 @@ class Player:
                  ) -> None:
 
         self.score = 0
-        self.dart_throws = 3
+        self.dart_throws = 1
         self.name = name.title()
         self.number = number
 
     def throw(self):
         print(f"\n{self.name} kaster dartpilene sine!")
 
-        while self.dart_throws != 0:
-            self.dart_throws -= 1
+        while self.dart_throws < 4:
+            self.dart_throws += 1
             score = randrange(0, 60)
             self.score += score
+
 
         print(f"{self.name} fikk {self.score} poeng!\n")
 
         return self.score
 
 
-print("Skriv 'nei' for å ikke legge til flere spillere")
+print("Skriv inn 'avbryt' for å ikke legge til flere spillere")
 
 while True:
     player_name = input("Legg inn navn til ny spiller: ").lower()
 
-    if player_name == 'nei':
+    if player_name == 'avbryt' or player_name == '':
         if player_count < 2:
             print("Du må legge til minst 2 spillere\n")
             continue
@@ -97,14 +98,15 @@ while True:
             players_list.insert(0, player_first_throw)
 
             players_objects.pop(player_throw_int)
+
+            for player in players_objects:
+                score_list.append(player.throw())
             break
 
         else:
             print("Ingen spillere har dette nummeret, prøv igjen.\n")
             continue
 
-for player in players_objects:
-    score_list.append(player.throw())
-
-print(score_list)
-print(players_list)
+for score_number in range(len(score_list)):
+    if score_list[score_number] == max(score_list):
+        print(f"{players_list[score_number].title()} vant med {score_list[score_number]} poeng!")
