@@ -8,12 +8,13 @@ Leveringsfrist: 29. september, 23.59
 import time
 
 user_quit = False
-add_item = ['add', 'ad', 'a']
-remove_item = ['remove item', 'remove' 'remov', 'remo', 'rem', 're', 'r']
+add_item = ['add item', 'add', 'ad', 'ai', 'a']
+remove_item = ['remove item', 'ri', 'remove' 'remov', 'remo', 'rem', 're', 'r']
 show_list = ['show list', 'show', 'list', 'sl', 'show l']
 show_commands = ['show commands', 'show command', 'show com', 'show c', 'sc']
 quit_program = ['exit program', 'quit program', 'quit', 'exit', 'q']
 packing_list = []
+
 
 def command_list():
     print(
@@ -22,19 +23,24 @@ def command_list():
         " 'remove item' |  for å slette noe fra listen\n",
         "  'show list'  |  for å printe ut pakkelisten din\n",
         "'show commands'|  for å skrive ut alle kommandoene du kan bruke\n",
-        "    'quit'     |  for å gå ut av programmet og lagre pakkelisten\n"
+        "    'quit'     |  for å gå ut av programmet og lagre pakkelisten"
         )
 
 def add_list(packing_list_a):
+    strike_count = 0
     print("Hvilken gjenstand har du lyst å legge til  i pakkelisten?")
-    user_add_item = input("")
+    user_add_item = input("").strip()
 
-    for element in packing_list_a:
-        if user_add_item == element:
-            print("Denne gjenstanden eksisterer allerede i pakkelisten din!")
-            return packing_list_a
+    if user_add_item != "":
+        for element in packing_list_a:
+            if user_add_item == element:
+                strike_count += 1
+                print("Denne gjenstanden eksisterer allerede i pakkelisten din!")
 
     else:
+        print("Dette er ikke en gjenstand!")
+
+    if strike_count == 0:
         packing_list_a.append(user_add_item)
 
     return packing_list_a
@@ -42,7 +48,7 @@ def add_list(packing_list_a):
 
 def remove_list(packing_list_r):
     print("Hvilken gjenstand har du lyst å slette fra pakkelisten?")
-    user_remove_item = input("")
+    user_remove_item = input("").strip()
 
     for element in packing_list_r:
         if element == user_remove_item:
@@ -61,7 +67,7 @@ command_list()
 
 while True:
 
-    bruker_kommando = input("\nSkriv en kommando: ").lower()
+    bruker_kommando = input("\nSkriv en kommando: ").lower().strip()
 
     match bruker_kommando:
         case bruker_kommando if bruker_kommando in add_item:

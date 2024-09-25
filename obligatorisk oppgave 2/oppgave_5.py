@@ -8,6 +8,7 @@ Leveringsfrist: 29. september, 23.59
 # Gjør oppgave 5, 1. og 2. sammen.
 
 from random import randrange
+import time
 
 player_count = 0
 max_name_length = 2**6
@@ -29,6 +30,7 @@ class Player:
 
     def throw(self):
         print(f"\n{self.name} kaster dartpilene sine!")
+        time.sleep(1)
 
         while self.dart_throws < 4:
             self.dart_throws += 1
@@ -37,6 +39,7 @@ class Player:
 
 
         print(f"{self.name} fikk {self.score} poeng!\n")
+        time.sleep(2)
 
         return self.score
 
@@ -44,7 +47,7 @@ class Player:
 print("Skriv inn 'avbryt' for å ikke legge til flere spillere")
 
 while True:
-    player_name = input("Legg inn navn til ny spiller: ").lower()
+    player_name = input("Legg inn navn til ny spiller: ").lower().strip()
 
     if player_name == 'avbryt' or player_name == '':
         if player_count < 2:
@@ -57,7 +60,6 @@ while True:
 
         if len(player_name) <= max_name_length:
             player_count = player_count + 1
-
             players_list.append(player_name)
             players_objects.append(Player(player_name, player_count))
 
@@ -109,4 +111,8 @@ while True:
 
 for score_number in range(len(score_list)):
     if score_list[score_number] == max(score_list):
+        for i in range(3):
+            print("- ")
+            time.sleep(1)
+
         print(f"{players_list[score_number].title()} vant med {score_list[score_number]} poeng!")
