@@ -34,15 +34,14 @@ class Player:
 
         while self.dart_throws < 4:
             self.dart_throws += 1
-            score = randrange(0, 60)
+            score = randrange(0, 61)
             self.score += score
 
 
         print(f"{self.name} fikk {self.score} poeng!\n")
-        time.sleep(2)
+        time.sleep(1)
 
         return self.score
-
 
 print("Skriv inn 'avbryt' for å ikke legge til flere spillere")
 
@@ -55,6 +54,10 @@ while True:
             continue
 
         break
+
+    elif player_name.lower() in players_list:
+        print("Denne spilleren er allerede lagt inn i spillet!")
+        continue
 
     elif player_name.isalpha():
 
