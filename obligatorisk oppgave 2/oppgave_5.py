@@ -112,10 +112,10 @@ while True:
             print("Ingen spillere har dette nummeret, prøv igjen.\n")
             continue
 
-for score_number in range(len(score_list)):
-    if score_list[score_number] == max(score_list):
+for score_index in range(len(score_list)):
+    if score_list[score_index] == max(score_list):
         for i in range(3):
             print("- ")
             time.sleep(1)
 
-        print(f"{players_list[score_number].title()} vant med {score_list[score_number]} poeng!")
+        print(f"{players_list[score_index].title()} vant med {score_list[score_index]} poeng!")

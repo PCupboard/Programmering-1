@@ -22,15 +22,15 @@ tolkien_books.extend(("The Silmarillion",
                      "Unfinished Tales"))
 
 
-for book_number in range(len(tolkien_books)):
-    if tolkien_books[book_number].lower() == "the fellowship of the ring":
-        tolkien_books[book_number] = "Lord of the Rings: The Fellowship of the Ring"
+for book_index in range(len(tolkien_books)):
+    if tolkien_books[book_index].lower() == "the fellowship of the ring":
+        tolkien_books[book_index] = "Lord of the Rings: The Fellowship of the Ring"
 
-    elif tolkien_books[book_number].lower() == "the two towers":
-        tolkien_books[book_number] = "Lord of the Rings: The Two Towers"
+    elif tolkien_books[book_index].lower() == "the two towers":
+        tolkien_books[book_index] = "Lord of the Rings: The Two Towers"
 
-    elif tolkien_books[book_number].lower() == "the return of the king":
-        tolkien_books[book_number] = "Lord of the Rings: The Return of the King"
+    elif tolkien_books[book_index].lower() == "the return of the king":
+        tolkien_books[book_index] = "Lord of the Rings: The Return of the King"
 
 tolkien_books.sort()
 

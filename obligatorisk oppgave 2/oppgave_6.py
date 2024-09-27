@@ -9,9 +9,9 @@ import time
 
 user_quit = False
 add_item = ['add item', 'add', 'ad', 'ai', 'a']
-remove_item = ['remove item', 'ri', 'remove' 'remov', 'remo', 'rem', 're', 'r']
+remove_item = ['remove item', 'remove', 'ri', 'remov', 'remo', 'rem', 're', 'r']
 show_list = ['show list', 'show', 'list', 'sl', 'show l']
-show_commands = ['show commands', 'show command', 'show com', 'show c', 'sc']
+show_commands = ['show commands', 'commands', 'show command', 'show com', 'show c', 'comm', 'com', 'sc']
 quit_program = ['exit program', 'quit program', 'quit', 'exit', 'q']
 packing_list = []
 
@@ -93,9 +93,14 @@ while True:
             print("Gjenkjenner ikke inputen, prøv igjen\n")
 
     if user_quit:
-        with open("pakkeliste.txt", "a") as packing_list_file:
+        with (open("pakkeliste.txt", "a") as packing_list_file):
+            print("Gi et navn til denne pakkelisten:")
+            packing_list_file.write(input(""))
+            packing_list_file.write("\n")
+
             for item in packing_list:
                 packing_list_file.write(f"{item}\n")
+
         print("Pakkelisten din er lagret i samme mappe som filen du kjører programmet fra!\n")
         packing_list_file.close()
 

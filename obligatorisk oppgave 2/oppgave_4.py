@@ -21,8 +21,8 @@ for book in tolkien_books:
     if not book.lower().find("lord of the rings: "):
         lotr_books.append(book)
 
-for book in range(len(lotr_books)):
-    print(lotr_books[book])
+for book_index in range(len(lotr_books)):
+    print(lotr_books[book_index])
 
 
 
