@@ -16,6 +16,11 @@ players_list = []
 players_objects = []
 score_list = []
 
+color_red = '\u001b[31m'
+color_yellow = '\u001b[33m'
+color_blue = '\u001b[34m'
+reset_color = '\u001b[0m'
+
 
 class Player:
     def __init__(self,
@@ -118,4 +123,14 @@ for score_index in range(len(score_list)):
             print("- ")
             time.sleep(1)
 
-        print(f"{players_list[score_index].title()} vant med {score_list[score_index]} poeng!")
+        print(f"{players_list[score_index].title()} vant med {color_red}{score_list[score_index]}{reset_color} poeng!\n")
+        time.sleep(1)
+        if player_count > 2:
+            print(f"{players_list[score_index+1].title()} kom på andre plass med {color_blue}{score_list[score_index+1]}{reset_color} poeng!\n")
+            time.sleep(1)
+
+            if player_count > 3:
+                print(f"{players_list[score_index+2].title()} kom på tredje plass med {color_yellow}{score_list[score_index+2]}{reset_color} poeng!\n")
+
+print(players_list)
+print(score_list)
