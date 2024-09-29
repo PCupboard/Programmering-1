@@ -12,23 +12,23 @@ def print_random_number():
 
     if len(str(rand_number)) == 1:
         # Printer ut en liten bil til tallet
-        print("|'¨'|\n" +
-              f"| {rand_number} |   vroom\n" +
-              "|'¨'|\n"
+        print("/'¨'\\ \n" +
+              f"| {rand_number} |   vroom \n" +
+              "|'¨'| \n"
               )
 
     elif len(str(rand_number)) == 2:
         # Printer ut en mellom stor bil til tallet
-        print("|'¨¨'|\n" +
-              f"| {rand_number} |   VROOM\n" +
-              "|'--'|\n"
+        print("/'¨¨'\\ \n" +
+              f"| {rand_number} |   VROOM \n" +
+              "|'--'| \n"
               )
 
     elif len(str(rand_number)) == 3:
         # Printer ut en stor bil til tallet
-        print("|'¨¨¨'|\n" +
-              f"| {rand_number} |   VROOM VROOM\n" +
-              "|'---'|\n"
+        print("/'¨¨¨'\\  \n" +
+              f"| {rand_number} |   VROOM VROOM \n" +
+              "|'---'| \n"
               )
 
 for i in range(3):
