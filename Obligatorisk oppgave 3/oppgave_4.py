@@ -17,4 +17,4 @@ for i in range(3):
     height = random.randrange(1, 21)
 
     volume_calculation = find_volume(length, width, height)
-    print(f"{volume_calculation}\n")
+    print(f"lengde = {length} \nbredde = {width} \nhøyde = {height} \nVolumet er {volume_calculation}\n")
