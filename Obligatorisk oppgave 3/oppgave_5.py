@@ -76,7 +76,7 @@ print("\n")
 print("Printer ut alle filmene med fin utskrift fra Oppgave 5.2 Deloppgave A:")
 def print_film_information(film_list_f):
     for film_f in film_list_f:
-        print(f"{film_f['name']} - {film_f['year']} has a rating of {film_f['rating']}")
+        print(f"{film_f['name']} - {film_f['year']} har en vurdering på {film_f['rating']}")
 
     return film_list_f
 
@@ -131,7 +131,7 @@ print("\n\n")
 def create_movie_file(film_list_f, file_name_f):
     film_file = open(f"{file_name_f}" + ".txt", "w")
     for film_f in film_list_f:
-        film_file.write(f"{film_f['name']} - {film_f['year']} has a rating of {film_f['rating']}\n")
+        film_file.write(f"{film_f['name']} - {film_f['year']} har en vurdering på {film_f['rating']}\n")
     film_file.close()
 
 
