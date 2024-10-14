@@ -128,7 +128,6 @@ for score_index in range(len(score_list)):
         if player_count > 2:
             print(f"{players_list[score_index+1].title()} kom på andre plass med {color_blue}{score_list[score_index+1]}{reset_color} poeng!\n")
             time.sleep(1)
-
             if player_count > 3:
                 print(f"{players_list[score_index+2].title()} kom på tredje plass med {color_yellow}{score_list[score_index+2]}{reset_color} poeng!\n")
 
