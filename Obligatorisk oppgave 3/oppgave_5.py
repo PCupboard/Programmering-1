@@ -117,7 +117,7 @@ while True:
         year_film_list = print_film_by_year(film_list_f=film_list, year_number=int(user_ask_year))
         break
 
-# Bruker en tidligere funksjon for printe ut filmene
+# Bruker en tidligere funksjon for å printe ut filmene
 print_film_information(year_film_list)
 print("\n\n")
 
