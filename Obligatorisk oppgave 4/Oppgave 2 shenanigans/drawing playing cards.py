@@ -90,7 +90,7 @@ playing_card_map3 = [ [top_left_corner,
                        horizontal_line, horizontal_line, horizontal_line,
                        bottom_right_corner], ]
 
-for row in playing_card_map3:
+for row in playing_card_map2:
     for element in row:
         if element != 0:
             print(element, end='')
@@ -98,5 +98,4 @@ for row in playing_card_map3:
             print(" ", end='')
     print()
 
-print("\u1F0A3")
 bruker = input("")
