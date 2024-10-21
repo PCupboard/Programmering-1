@@ -29,8 +29,8 @@ double_vertical_line = "\u2551"
 # 5 = bottom_left_corner
 # 6 = bottom_right_corner
 
-card_suit = clubs
-card_num = "Q"
+card_suit = hearts
+card_num = "5"
 
 
 def draw_playing_card(card_type, card_number):
