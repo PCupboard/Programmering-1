@@ -5,38 +5,47 @@ class Deck:
     def __init__(self) -> None:
         self.suits = ['hearts', 'diamonds', 'spades', 'clubs']
         self.ranks = ['2', '3', '3', '5', '6', '7', '8', '9', '10', 'joker', 'queen', 'king', 'ace']
-        self.value = []
         self.deck = []
-        self.draw_deck = []
+        self.draw_deck = 0
 
-    def build(self) -> list:
+    def build(self) -> None:
         for suit in self.suits:
             for rank in self.ranks:
-                self.deck.append((suit, rank))
+                self.deck.append([suit, rank])
 
         for card in self.deck:
-            print(card)
-            if card.isnumeric():
-                self.deck.append(card[1])
-                print(self.deck)
+            if card[1].isnumeric():
+                card.append(card[1])
 
-        print(self.deck)
+            elif card[1] == 'ace':
+                card.extend([11, 1])
 
-        return self.deck
+            else:
+                card.append(10)
+
+        # Etter de to nesta for-løkkene er ferdig så eksisterer det en list of lists
+        # I hvert element i listen ligger det en liste som har 3 elementer i seg
+        # 'suit', 'rank', og 'value'
+        #  [0]      [1]        [2]      for å hente denne informasjonen
+        #
+        # EN EXCEPTION. 'ace' kortet har two values som en kan hente ved [2] og [3]
+
+            #print(card)
 
     def shuffle(self) -> None:
         random.shuffle(self.deck)
 
     def draw(self) -> list:
-        self.draw_deck.clear()
-        self.draw_deck.append(self.deck[0])
+        self.draw_deck = (self.deck[0])
         self.deck.pop(0)
-        print(self.deck)
 
         return self.draw_deck
 
     def destroy_deck(self) -> None:
         self.deck.clear()
+
+    def debug_draw_card(self) -> None:
+        print(self.deck[:4])
 
 
 class Player:
@@ -52,8 +61,8 @@ class Player:
                       "pink": 5
                      }
 
-    def hit(self):
-        self.player_deck = self.deck.draw()
+    def hit(self) -> None:
+        self.player_deck.append(self.deck.draw())
         print(self.player_deck)
 
 
@@ -66,15 +75,18 @@ class Dealer:
         pass
 
 
-class DrawCards:
-    def __init__(self) -> None:
-        pass
-
 
 your_deck = Deck()
 your_deck.build()
 your_deck.shuffle()
-print(your_deck.deck)
+your_deck.debug_draw_card()
+
 player = Player(your_deck)
 player.hit()
+your_deck.debug_draw_card()
 player.hit()
+your_deck.debug_draw_card()
+
+
+
+
