@@ -52,6 +52,79 @@ class Deck:
     def debug_show_cards(self) -> None:
         print(self.deck[:4])
 
+
+class Character:
+    def __init__(self, deck) -> None:
+        self.deck = deck
+        self.character_deck = []
+        self.cards_value = 0
+        self.cards_count = -1
+
+    def hit(self) -> None:
+        self.character_deck.append(self.deck.draw())
+        self.cards_count += 1
+
+        current_card = self.character_deck[self.cards_count]
+        self.cards_value = self.cards_value + int(current_card[2])
+        print(f"Character's hand: {self.character_deck}")
+        print(f"Character's hand value: {self.cards_value}")
+
+    def calculate(self) -> None:
+        if self.cards_value >= 21:
+            print("Jæværn busta")
+        elif self.cards_value >= 17:
+            print("Jæværn står")
+        else:
+            print("Jæværn trekker")
+
+    def kill(self) -> None:
+        self.character_deck.clear()
+        self.cards_count = 0
+        self.cards_value = 0
+
+
+# -------- PLAYER CLASS -------- #
+class Player(Character):
+    def __init__(self, deck) -> None:
+        super().__init__(deck)
+        self.chips = {
+            "white": 20,
+            "blue": 20,
+            "green": 15,
+            "black": 10,
+            "pink": 5
+        }
+
+
+# -------- DEALER CLASS -------- #
+class Dealer(Character):
+    def __init__(self, deck) -> None:
+        super().__init__(deck)
+
+
+your_deck = Deck()
+your_deck.build()
+your_deck.shuffle()
+player1 = Player(your_deck)
+dealer = Dealer(your_deck)
+
+dealer.hit()
+dealer.hit()
+print()
+player1.hit()
+player1.hit()
+
+
+
+
+
+
+
+
+
+
+
+'''        
 # -------- PLAYER CLASS -------- #
 class Player:
     def __init__(self, deck) -> None:
@@ -105,13 +178,9 @@ class Dealer:
         self.dealer_deck.clear()
         self.cards_count = 0
         self.cards_value = 0
+'''
 
-
-your_deck = Deck()
-your_deck.build()
-your_deck.shuffle()
-your_deck.debug_show_cards()
-
+'''
 dealer = Dealer(your_deck)
 dealer.hit()
 dealer.calculate()
@@ -119,6 +188,7 @@ dealer.hit()
 dealer.calculate()
 dealer.hit()
 dealer.calculate()
+'''
 
 #player = Player(your_deck)
 #player.hit()
