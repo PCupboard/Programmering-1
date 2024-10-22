@@ -1,12 +1,32 @@
+import os
 import random
+import time
+import settings
 
 
 class GameInstance:
     def __init__(self):
         self.user_query = 0
+        self.game_name = "Blackjack"
+
+        print()
+        print("|----------------------|")
+        print("<                      >")
+        print("|----------------------|")
+        time.sleep(1)
+        print(f"{settings.up_line + settings.up_line}< Welcome              >", end='\r')
+        time.sleep(0.5)
+        print("< Welcome To           >", end='\r')
+        time.sleep(0.5)
+        print(f"< Welcome To {settings.red_color + self.game_name + settings.white_color} \n\n")
+        time.sleep(1)
+        print(f"A Program made by Patrick Jemieljanczyk")
+        time.sleep(2)
+        os.system('cls')
 
     def introduction(self):
         pass
+
 
     def game_start(self):
         pass
@@ -15,7 +35,7 @@ class GameInstance:
         pass
 
 
-# -------- DECK CLASS -------- #
+# ---------- DECK CLASS ---------- #
 class Deck:
     def __init__(self) -> None:
         self.suits = ['hearts', 'diamonds', 'spades', 'clubs']
@@ -63,6 +83,7 @@ class Deck:
         print(self.deck[:4])
 
 
+# ---------- DRAW CARD CLASS ---------- #
 class DrawCard:
     def __init__(self):
         pass
@@ -121,6 +142,7 @@ class Dealer(Character):
         self.character_name = "dealer"
 
 
+game_instance = GameInstance()
 your_deck = Deck()
 your_deck.build()
 your_deck.shuffle()
@@ -132,6 +154,10 @@ dealer.hit()
 print()
 player1.hit()
 player1.hit()
+
+while True:
+    # This is where the PRE-GAME loop is stationed
+    pass
 
 
 while True:
