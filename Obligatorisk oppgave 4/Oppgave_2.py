@@ -27,7 +27,6 @@ class Deck:
 
             else:
                 card.append(10)
-            print(card)
 
         # Etter de tre for-løkkene er ferdig så eksisterer det en list of lists
         # I hvert element i listen ligger det en liste som har 3 elementer i seg
@@ -50,7 +49,7 @@ class Deck:
     def destroy_deck(self) -> None:
         self.deck.clear()
 
-    def debug_draw_card(self) -> None:
+    def debug_show_cards(self) -> None:
         print(self.deck[:4])
 
 # -------- PLAYER CLASS -------- #
@@ -74,6 +73,9 @@ class Player:
     def stand(self):
         pass
 
+    def kill_player(self) -> None:
+        self.player_deck.clear()
+
 # -------- DEALER CLASS -------- #
 class Dealer:
     def __init__(self, deck) -> None:
@@ -88,21 +90,16 @@ class Dealer:
 
         current_card = self.dealer_deck[self.cards_count]
         self.cards_value = self.cards_value + int(current_card[2])
-
-
-
-
-        print(current_card)
         print(f"Dealer's hand value: {self.cards_value}")
 
+
     def calculate(self) -> None:
-
-
-        if self.cards_value >= 17:
-            print("The dealer stands")
-
+        if self.cards_value >= 21:
+            print("Jæværn busta")
+        elif self.cards_value >= 17:
+            print("Jæværn står")
         else:
-            pass
+            print("Jæværn trekker")
 
     def kill_dealer(self) -> None:
         self.dealer_deck.clear()
@@ -113,9 +110,11 @@ class Dealer:
 your_deck = Deck()
 your_deck.build()
 your_deck.shuffle()
-your_deck.debug_draw_card()
+your_deck.debug_show_cards()
 
 dealer = Dealer(your_deck)
+dealer.hit()
+dealer.calculate()
 dealer.hit()
 dealer.calculate()
 dealer.hit()
@@ -126,6 +125,10 @@ dealer.calculate()
 #your_deck.debug_draw_card()
 #player.hit()
 #your_deck.debug_draw_card()
+
+while True:
+    # This is where the MAIN GAME loop will appear
+    pass
 
 # Trenger å legge til en 'value' deck for både dealeren og spilleren
 # Denne vil lagre alle kortene i hånden til begge klassene og skrive ut verdien av hånden til spilleren og dealeren.
