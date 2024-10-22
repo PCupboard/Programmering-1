@@ -1,9 +1,19 @@
 import random
 
 
-class Game:
+class GameInstance:
     def __init__(self):
+        self.user_query = 0
+
+    def introduction(self):
         pass
+
+    def game_start(self):
+        pass
+
+    def game_logic(self):
+        pass
+
 
 # -------- DECK CLASS -------- #
 class Deck:
@@ -28,14 +38,14 @@ class Deck:
             else:
                 card.append(10)
 
-        # Etter de tre for-løkkene er ferdig så eksisterer det en list of lists
-        # I hvert element i listen ligger det en liste som har 3 elementer i seg
+        # Etter de tre for-løkkene er ferdig så eksisterer det en list of lists.
+        # I hvert element i listen ligger det en liste som har 3 elementer i seg;
         # 'suit', 'rank', og 'value'
         #  [0]      [1]        [2]      for å hente denne informasjonen
         #
         # EN EXCEPTION. 'ace' kortet har two values som en kan hente ved [2] og [3]
         #                                                                 11  og 1 er valuen
-        # Happy drawing ;D
+        # Happy gambling ;D
 
     def shuffle(self) -> None:
         random.shuffle(self.deck)
@@ -53,12 +63,19 @@ class Deck:
         print(self.deck[:4])
 
 
+class DrawCard:
+    def __init__(self):
+        pass
+
+
+# -------- CHARACTER PARENT CLASS -------- #
 class Character:
     def __init__(self, deck) -> None:
         self.deck = deck
         self.character_deck = []
         self.cards_value = 0
         self.cards_count = -1
+        self.character_name = "character"
 
     def hit(self) -> None:
         self.character_deck.append(self.deck.draw())
@@ -66,16 +83,16 @@ class Character:
 
         current_card = self.character_deck[self.cards_count]
         self.cards_value = self.cards_value + int(current_card[2])
-        print(f"Character's hand: {self.character_deck}")
-        print(f"Character's hand value: {self.cards_value}")
+        print(f"{self.character_name} hand: {self.character_deck}")
+        print(f"{self.character_name} hand value: {self.cards_value}")
 
     def calculate(self) -> None:
         if self.cards_value >= 21:
-            print("Jæværn busta")
+            print(f"{self.character_name} busta")
         elif self.cards_value >= 17:
-            print("Jæværn står")
+            print(f"{self.character_name} står")
         else:
-            print("Jæværn trekker")
+            print(f"{self.character_name} trekker")
 
     def kill(self) -> None:
         self.character_deck.clear()
@@ -83,10 +100,11 @@ class Character:
         self.cards_value = 0
 
 
-# -------- PLAYER CLASS -------- #
+# -------- PLAYER CHILD CLASS -------- #
 class Player(Character):
     def __init__(self, deck) -> None:
         super().__init__(deck)
+        self.character_name = "player"
         self.chips = {
             "white": 20,
             "blue": 20,
@@ -96,10 +114,11 @@ class Player(Character):
         }
 
 
-# -------- DEALER CLASS -------- #
+# -------- DEALER CHILD CLASS -------- #
 class Dealer(Character):
     def __init__(self, deck) -> None:
         super().__init__(deck)
+        self.character_name = "dealer"
 
 
 your_deck = Deck()
@@ -115,95 +134,7 @@ player1.hit()
 player1.hit()
 
 
-
-
-
-
-
-
-
-
-
-'''        
-# -------- PLAYER CLASS -------- #
-class Player:
-    def __init__(self, deck) -> None:
-        self.deck = deck
-        self.player_deck = []
-
-        self.chips = {
-                      "white": 20,
-                      "blue": 20,
-                      "green": 15,
-                      "black": 10,
-                      "pink": 5
-                     }
-
-    def hit(self) -> None:
-        self.player_deck.append(self.deck.draw())
-        print(self.player_deck)
-
-    def stand(self):
-        pass
-
-    def kill_player(self) -> None:
-        self.player_deck.clear()
-
-# -------- DEALER CLASS -------- #
-class Dealer:
-    def __init__(self, deck) -> None:
-        self.deck = deck
-        self.dealer_deck = []
-        self.cards_value = 0
-        self.cards_count = -1
-
-    def hit(self) -> None:
-        self.dealer_deck.append(self.deck.draw())
-        self.cards_count += 1
-
-        current_card = self.dealer_deck[self.cards_count]
-        self.cards_value = self.cards_value + int(current_card[2])
-        print(f"Dealer's hand value: {self.cards_value}")
-
-
-    def calculate(self) -> None:
-        if self.cards_value >= 21:
-            print("Jæværn busta")
-        elif self.cards_value >= 17:
-            print("Jæværn står")
-        else:
-            print("Jæværn trekker")
-
-    def kill_dealer(self) -> None:
-        self.dealer_deck.clear()
-        self.cards_count = 0
-        self.cards_value = 0
-'''
-
-'''
-dealer = Dealer(your_deck)
-dealer.hit()
-dealer.calculate()
-dealer.hit()
-dealer.calculate()
-dealer.hit()
-dealer.calculate()
-'''
-
-#player = Player(your_deck)
-#player.hit()
-#your_deck.debug_draw_card()
-#player.hit()
-#your_deck.debug_draw_card()
-
 while True:
-    # This is where the MAIN GAME loop will appear
+    # This is where the MAIN GAME loop is stationed
     pass
-
-# Trenger å legge til en 'value' deck for både dealeren og spilleren
-# Denne vil lagre alle kortene i hånden til begge klassene og skrive ut verdien av hånden til spilleren og dealeren.
-# Viktig er å unngå duplikat av kort, slik at verdien kan bli hentet enkelt og greit
-#
-
-
 
