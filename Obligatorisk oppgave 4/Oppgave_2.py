@@ -1,8 +1,10 @@
 import os
 import random
 import time
-import settings
+import settings as setting
 
+card_suit = setting.hearts
+card_num = "5"
 
 class GameInstance:
     def __init__(self):
@@ -14,11 +16,11 @@ class GameInstance:
         print("<                      >")
         print("|----------------------|")
         time.sleep(1)
-        print(f"{settings.up_line + settings.up_line}< Welcome              >", end='\r')
+        print(f"{setting.up_line + setting.up_line}< Welcome              >", end='\r')
         time.sleep(0.5)
         print("< Welcome To           >", end='\r')
         time.sleep(0.5)
-        print(f"< Welcome To {settings.red_color + self.game_name + settings.white_color} \n\n")
+        print(f"< Welcome To {setting.red_color + self.game_name + setting.white_color} \n\n")
         time.sleep(1)
         print(f"A Program made by Patrick Jemieljanczyk")
         time.sleep(2)
@@ -26,7 +28,6 @@ class GameInstance:
 
     def introduction(self):
         pass
-
 
     def game_start(self):
         pass
@@ -85,8 +86,19 @@ class Deck:
 
 # ---------- DRAW CARD CLASS ---------- #
 class DrawCard:
-    def __init__(self):
+    def __init__(self, playing_card_map):
+        self.card_map = playing_card_map
+
+    def make_card(self):
         pass
+
+    def draw_card(self):
+        for row in self.card_map:
+            for element in row:
+                if element != 0:
+                    print(element, end='')
+                else:
+                    print(" ", end='')
 
 
 # -------- CHARACTER PARENT CLASS -------- #
@@ -146,6 +158,7 @@ game_instance = GameInstance()
 your_deck = Deck()
 your_deck.build()
 your_deck.shuffle()
+draw_card = DrawCard()
 player1 = Player(your_deck)
 dealer = Dealer(your_deck)
 
@@ -154,6 +167,7 @@ dealer.hit()
 print()
 player1.hit()
 player1.hit()
+
 
 while True:
     # This is where the PRE-GAME loop is stationed

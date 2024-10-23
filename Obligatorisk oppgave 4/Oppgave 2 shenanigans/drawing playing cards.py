@@ -70,6 +70,7 @@ playing_card_map2 = [ [top_left_corner,
                        horizontal_line, horizontal_line, horizontal_line,
                        bottom_right_corner], ]
 
+
 playing_card_map3 = [ [top_left_corner,
                        horizontal_line, horizontal_line, horizontal_line,
                        horizontal_line, horizontal_line, horizontal_line,

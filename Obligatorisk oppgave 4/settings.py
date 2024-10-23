@@ -1,4 +1,6 @@
 # Various variables to be used in the game
+card_num = 0
+card_suit = 0
 
 # Color variables
 red_color = "\033[31m" # Red Color
@@ -27,3 +29,24 @@ double_horizontal_line = "\u2550"
 double_bottom_left_corner = "\u255A"
 double_bottom_right_corner = "\u255D"
 double_vertical_line = "\u2551"
+
+# Drawing card
+playing_card_map = [ [top_left_corner,
+                       horizontal_line, horizontal_line, horizontal_line,
+                       horizontal_line, horizontal_line, horizontal_line,
+                       horizontal_line, horizontal_line, horizontal_line,
+                       top_right_corner],
+
+                      [vertical_line, card_num, 0, 0, 0, 0, 0, 0, 0, card_num, vertical_line],
+                      [vertical_line, card_suit, 0, 0, 0, 0, 0, 0, 0, card_suit, vertical_line],
+                      [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
+                      [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
+                      [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
+                      [vertical_line, card_suit, 0, 0, 0, 0, 0, 0, 0, card_suit, vertical_line],
+                      [vertical_line, card_num, 0, 0, 0, 0, 0, 0, 0, card_num, vertical_line],
+
+                      [bottom_left_corner,
+                       horizontal_line, horizontal_line, horizontal_line,
+                       horizontal_line, horizontal_line, horizontal_line,
+                       horizontal_line, horizontal_line, horizontal_line,
+                       bottom_right_corner] ]
