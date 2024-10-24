@@ -1,5 +1,5 @@
 # Various variables to be used in the game
-card_num = 0
+card_rank = 0
 card_suit = 0
 
 # Color variables
@@ -37,13 +37,13 @@ playing_card_map = [ [top_left_corner,
                        horizontal_line, horizontal_line, horizontal_line,
                        top_right_corner],
 
-                      [vertical_line, card_num, 0, 0, 0, 0, 0, 0, 0, card_num, vertical_line],
+                      [vertical_line, card_rank, 0, 0, 0, 0, 0, 0, 0, card_rank, vertical_line],
                       [vertical_line, card_suit, 0, 0, 0, 0, 0, 0, 0, card_suit, vertical_line],
                       [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
                       [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
                       [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
                       [vertical_line, card_suit, 0, 0, 0, 0, 0, 0, 0, card_suit, vertical_line],
-                      [vertical_line, card_num, 0, 0, 0, 0, 0, 0, 0, card_num, vertical_line],
+                      [vertical_line, card_rank, 0, 0, 0, 0, 0, 0, 0, card_rank, vertical_line],
 
                       [bottom_left_corner,
                        horizontal_line, horizontal_line, horizontal_line,

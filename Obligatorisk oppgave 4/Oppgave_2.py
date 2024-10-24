@@ -1,10 +1,23 @@
 import os
 import random
 import time
-import settings as setting
+import settings as sett
 
-card_suit = setting.hearts
-card_num = "5"
+# Drawing symbols for cards
+hearts = '\u2665'
+diamonds = '\u2666'
+clubs = '\u2663'
+spades = '\u2660'
+top_left_corner = "\u250C"
+top_right_corner = "\u2510"
+horizontal_line = "\u2500"
+vertical_line = "\u2502"
+bottom_left_corner = "\u2514"
+bottom_right_corner = "\u2518"
+
+# Misc
+up_line = "\033[A"
+
 
 class GameInstance:
     def __init__(self):
@@ -16,11 +29,11 @@ class GameInstance:
         print("<                      >")
         print("|----------------------|")
         time.sleep(1)
-        print(f"{setting.up_line + setting.up_line}< Welcome              >", end='\r')
+        print(f"{sett.up_line + sett.up_line}< Welcome              >", end='\r')
         time.sleep(0.5)
         print("< Welcome To           >", end='\r')
         time.sleep(0.5)
-        print(f"< Welcome To {setting.red_color + self.game_name + setting.white_color} \n\n")
+        print(f"< Welcome To {sett.red_color + self.game_name + sett.white_color} \n\n")
         time.sleep(1)
         print(f"A Program made by Patrick Jemieljanczyk")
         time.sleep(2)
@@ -40,7 +53,7 @@ class GameInstance:
 class Deck:
     def __init__(self) -> None:
         self.suits = ['hearts', 'diamonds', 'spades', 'clubs']
-        self.ranks = ['2', '3', '3', '5', '6', '7', '8', '9', '10', 'joker', 'queen', 'king', 'ace']
+        self.ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'joker', 'queen', 'king', 'ace']
         self.deck = []
         self.draw_deck = 0
 
@@ -84,30 +97,18 @@ class Deck:
         print(self.deck[:4])
 
 
-# ---------- DRAW CARD CLASS ---------- #
-class DrawCard:
-    def __init__(self, playing_card_map):
-        self.card_map = playing_card_map
-
-    def make_card(self):
-        pass
-
-    def draw_card(self):
-        for row in self.card_map:
-            for element in row:
-                if element != 0:
-                    print(element, end='')
-                else:
-                    print(" ", end='')
-
-
 # -------- CHARACTER PARENT CLASS -------- #
 class Character:
     def __init__(self, deck) -> None:
         self.deck = deck
         self.character_deck = []
+
+        self.card_rank = 0
+        self.card_suit = 0
+
         self.cards_value = 0
         self.cards_count = -1
+        self.draw_card_count = 0
         self.character_name = "character"
 
     def hit(self) -> None:
@@ -126,6 +127,72 @@ class Character:
             print(f"{self.character_name} står")
         else:
             print(f"{self.character_name} trekker")
+
+    def draw_card_deck(self):
+        self.draw_card_count = len(self.character_deck) - 1
+
+        for card in self.character_deck[::-1]:
+            if card[0] in 'hearts':
+                self.card_suit = hearts
+            elif card[0] in 'diamonds':
+                self.card_suit = diamonds
+            elif card[0] in 'clubs':
+                self.card_suit = clubs
+            else:
+                self.card_suit = spades
+
+            if card[1] in 'joker':
+                self.card_rank = 'J'
+            elif card[1] in 'queen':
+                self.card_rank = 'Q'
+            elif card[1] in 'king':
+                self.card_rank = 'K'
+            elif card[1] in 'ace':
+                self.card_rank = 'A'
+            else:
+                self.card_rank = card[1]
+
+            card_map = [
+                    [top_left_corner,
+                     horizontal_line, horizontal_line, horizontal_line,
+                     horizontal_line, horizontal_line, horizontal_line,
+                     horizontal_line, horizontal_line, horizontal_line,
+                     top_right_corner],
+
+                    [vertical_line, self.card_rank, 0, 0, 0, 0, 0, 0, 0, self.card_rank, vertical_line],
+                    [vertical_line, self.card_suit, 0, 0, 0, 0, 0, 0, 0, self.card_suit, vertical_line],
+                    [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
+                    [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
+                    [vertical_line, 0, 0, 0, 0, 0, 0, 0, 0, 0, vertical_line],
+                    [vertical_line, self.card_suit, 0, 0, 0, 0, 0, 0, 0, self.card_suit, vertical_line],
+                    [vertical_line, self.card_rank, 0, 0, 0, 0, 0, 0, 0, self.card_rank, vertical_line],
+
+                    [bottom_left_corner,
+                     horizontal_line, horizontal_line, horizontal_line,
+                     horizontal_line, horizontal_line, horizontal_line,
+                     horizontal_line, horizontal_line, horizontal_line,
+                     bottom_right_corner],
+                    ]
+
+            if self.card_rank in '10':
+                card_map[1].pop(7)
+                card_map[1].pop(7)
+                card_map[7].pop(7)
+                card_map[7].pop(7)
+
+            for row in card_map:
+                print(" " * 12 * self.draw_card_count, end='')
+                for element in row:
+                    if element != 0:
+                        print(element, end='')
+                    else:
+                        print(end=' ')
+                print()
+
+            print(up_line * 10)
+            self.draw_card_count -= 1
+
+        print("\n" * 9)
 
     def kill(self) -> None:
         self.character_deck.clear()
@@ -158,15 +225,18 @@ game_instance = GameInstance()
 your_deck = Deck()
 your_deck.build()
 your_deck.shuffle()
-draw_card = DrawCard()
+your_deck.debug_show_cards()
 player1 = Player(your_deck)
 dealer = Dealer(your_deck)
 
 dealer.hit()
 dealer.hit()
 print()
-player1.hit()
-player1.hit()
+for i in range(9):
+    player1.hit()
+
+player1.draw_card_deck()
+
 
 
 while True:
@@ -177,4 +247,3 @@ while True:
 while True:
     # This is where the MAIN GAME loop is stationed
     pass
-
