@@ -47,11 +47,7 @@ playing_card_map = [ [top_left_corner,
                        horizontal_line, horizontal_line, horizontal_line,
                        bottom_right_corner] ]
 
+#####################################################
+# -------- INFORMATION AND INFORMATIONAL PRINTS -------- #
+#####################################################
 
-#for row in playing_card_map:
-#    for element in row:
-#        if element != 0:
-#            print(element, end='')
-#        else:
-#            print(" ", end='')
-#    print()

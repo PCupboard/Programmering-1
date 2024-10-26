@@ -1,5 +1,4 @@
 import settings as sett
-import time
 
 # -------- CHARACTER PARENT CLASS -------- #
 class Character:
@@ -45,8 +44,7 @@ class Character:
                 self.busted = True
                 return self.busted
 
-
-    def draw_card_deck(self):
+    def draw_card_deck(self) -> None:
         self.deck_length = len(self.character_deck) - 1
 
         for card in self.character_deck[::-1]:
