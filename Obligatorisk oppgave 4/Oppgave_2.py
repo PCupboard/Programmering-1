@@ -102,13 +102,14 @@ class Character:
     def __init__(self, deck) -> None:
         self.deck = deck
         self.character_deck = []
-
         self.card_rank = 0
         self.card_suit = 0
-
         self.cards_value = 0
+
+        self.ace_card_count = 0
         self.cards_count = -1
         self.draw_card_count = 0
+
         self.character_name = "character"
 
     def hit(self) -> None:
@@ -117,6 +118,11 @@ class Character:
 
         current_card = self.character_deck[self.cards_count]
         self.cards_value = self.cards_value + int(current_card[2])
+
+        if current_card[1] == 'ace':
+            self.ace_card_count += 1
+
+
         print(f"{self.character_name} hand: {self.character_deck}")
         print(f"{self.character_name} hand value: {self.cards_value}")
 
@@ -189,8 +195,8 @@ class Character:
                         print(end=' ')
                 print()
 
-            print(up_line * 10)
             self.draw_card_count -= 1
+            print(up_line * 10)
 
         print("\n" * 9)
 
@@ -221,7 +227,7 @@ class Dealer(Character):
         self.character_name = "dealer"
 
 
-game_instance = GameInstance()
+#game_instance = GameInstance()
 your_deck = Deck()
 your_deck.build()
 your_deck.shuffle()
@@ -232,7 +238,7 @@ dealer = Dealer(your_deck)
 dealer.hit()
 dealer.hit()
 print()
-for i in range(9):
+for i in range(5):
     player1.hit()
 
 player1.draw_card_deck()
