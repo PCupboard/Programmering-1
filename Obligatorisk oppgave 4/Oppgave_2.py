@@ -55,7 +55,7 @@ class Deck:
         self.suits = ['hearts', 'diamonds', 'spades', 'clubs']
         self.ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'joker', 'queen', 'king', 'ace']
         self.deck = []
-        self.draw_deck = 0
+        self.draw_card = 0
 
     def build(self) -> None:
         for suit in self.suits:
@@ -85,10 +85,10 @@ class Deck:
         random.shuffle(self.deck)
 
     def draw(self) -> list:
-        self.draw_deck = (self.deck[0])
+        self.draw_card = (self.deck[0])
         self.deck.pop(0)
 
-        return self.draw_deck
+        return self.draw_card
 
     def destroy_deck(self) -> None:
         self.deck.clear()
@@ -104,38 +104,46 @@ class Character:
         self.character_deck = []
         self.card_rank = 0
         self.card_suit = 0
-        self.cards_value = 0
+
+        self.busted = False
+
+        self.deck_value = 0
+        self.deck_length = 0
 
         self.ace_card_count = 0
-        self.cards_count = -1
-        self.draw_card_count = 0
 
         self.character_name = "character"
 
     def hit(self) -> None:
         self.character_deck.append(self.deck.draw())
-        self.cards_count += 1
+        self.deck_length = len(self.character_deck) - 1
 
-        current_card = self.character_deck[self.cards_count]
-        self.cards_value = self.cards_value + int(current_card[2])
+        current_card = self.character_deck[self.deck_length]
+        self.deck_value = self.deck_value + int(current_card[2])
 
         if current_card[1] == 'ace':
             self.ace_card_count += 1
-
-
-        print(f"{self.character_name} hand: {self.character_deck}")
-        print(f"{self.character_name} hand value: {self.cards_value}")
-
-    def calculate(self) -> None:
-        if self.cards_value >= 21:
-            print(f"{self.character_name} busta")
-        elif self.cards_value >= 17:
-            print(f"{self.character_name} står")
         else:
-            print(f"{self.character_name} trekker")
+            pass
+
+        print(f"{self.character_name} hand value: {self.deck_value}")
+
+    def busted_check(self) -> bool:
+        if self.deck_value > 21:
+            if self.ace_card_count >= 1:
+                self.deck_value -= 10
+                self.ace_card_count -= 1
+                print("Changed the value of the ace in your hand from 11 to 1.")
+                print(self.deck_value, "\n")
+
+            else:
+                print("YOU HAVE BUSTED! EMPTY THEM POCKETS!")
+                self.busted = True
+                return self.busted
+
 
     def draw_card_deck(self):
-        self.draw_card_count = len(self.character_deck) - 1
+        self.deck_length = len(self.character_deck) - 1
 
         for card in self.character_deck[::-1]:
             if card[0] in 'hearts':
@@ -187,7 +195,7 @@ class Character:
                 card_map[7].pop(7)
 
             for row in card_map:
-                print(" " * 12 * self.draw_card_count, end='')
+                print(" " * 12 * self.deck_length, end='')
                 for element in row:
                     if element != 0:
                         print(element, end='')
@@ -195,15 +203,16 @@ class Character:
                         print(end=' ')
                 print()
 
-            self.draw_card_count -= 1
+            self.deck_length -= 1
             print(up_line * 10)
 
         print("\n" * 9)
+        print(self.deck_length)
 
     def kill(self) -> None:
         self.character_deck.clear()
-        self.cards_count = 0
-        self.cards_value = 0
+        self.deck_length = 0
+        self.deck_value = 0
 
 
 # -------- PLAYER CHILD CLASS -------- #
@@ -233,16 +242,16 @@ your_deck.build()
 your_deck.shuffle()
 your_deck.debug_show_cards()
 player1 = Player(your_deck)
-dealer = Dealer(your_deck)
 
-dealer.hit()
-dealer.hit()
 print()
-for i in range(5):
+
+for i in range(6):
     player1.hit()
+    busted_bool = player1.busted_check()
+    if busted_bool:
+        break
 
 player1.draw_card_deck()
-
 
 
 while True:
