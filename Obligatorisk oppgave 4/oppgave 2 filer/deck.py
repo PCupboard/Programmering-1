@@ -4,7 +4,7 @@ import random
 class Deck:
     def __init__(self) -> None:
         self.suits = ['hearts', 'diamonds', 'spades', 'clubs']
-        self.ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'joker', 'queen', 'king', 'ace']
+        self.ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'queen', 'king', 'ace']
         self.deck = []
         self.draw_card = 0
 

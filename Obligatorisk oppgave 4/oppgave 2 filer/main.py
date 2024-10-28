@@ -6,6 +6,10 @@ import character
 import deck
 
 
+player_object_list = []
+
+
+# ----- STARTING GAME INSTANCE CLASS ----- #
 class StartingGameInstance:
     def __init__(self):
         self.user_query = ""
@@ -71,16 +75,13 @@ class StartingGameInstance:
         exit()
 
 
+# ----- RUNNING GAME INSTANCE CLASS ----- #
 class RunningGameInstance:
     def __init__(self):
         self.player_name = ""
 
-    def new_player(self):
-        self.player_name = input("Enter name of the new player:")
-        if check_player_name(self.player_name):
-            return self.player_name
-        else:
-            return False
+    def new_player(self) -> None:
+        self.player_name = input("Enter name of the new player: ")
 
 
 def game_start_logic(player_input) -> None:
@@ -107,14 +108,6 @@ def check_for_int(player_input) -> bool:
         else:
             print("Number not recognized, try again\n\n")
             return False
-
-def check_player_name(player_name) -> bool:
-    if player_name.isalpha():
-        print("Name accepted")
-        return True
-    else:
-        print("Name rejected")
-        return False
 
 
 game_start_instance = StartingGameInstance()
@@ -143,12 +136,48 @@ while True:
 
     # This is code after the game has begun
     game_running_instance = RunningGameInstance()
-    if not game_running_instance.new_player():
-        game_running_instance.new_player()
 
-    else:
-        print("NAME FUCKED")
-        input("")
+    # Legger til nye spillere
+    while True:
+        game_running_instance.new_player()
+        if game_running_instance.player_name in '':
+            break
+
+        elif game_running_instance.player_name.isalpha():
+            player_object_list.append(character.Player(your_deck, game_running_instance.player_name))
+            print("Name accepted")
+            continue
+
+        else:
+            print("Name rejected")
+            continue
+
+    for player in player_object_list:
+        print(player.character_name)
+    input("")
+    print()
+
+    # Hver spiller satser sine chips
+    # TODO: Her er ingenting gjort ennå, men skal komme senere. Fokuserer på selve spillet for nå.
+
+    # Blackjack spillet begynner herfra;
+    dealer.hit()
+    print("The dealer's card")
+    dealer.draw_card_deck()
+
+    for player in player_object_list:
+        while True:
+            print("Do you want to hit or stand?")
+            player_choice = input("")
+            if player_choice == "1":
+                player.hit()
+                player.draw_card_deck()
+                player.busted_check()
+            else:
+                print("You stand")
+                break
+
+    print("All players have done their turn.")
 
 
 #while True:

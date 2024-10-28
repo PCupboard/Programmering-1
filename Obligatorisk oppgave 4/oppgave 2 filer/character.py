@@ -29,15 +29,12 @@ class Character:
         else:
             pass
 
-        print(f"{self.character_name} hand value: {self.deck_value}")
-
     def busted_check(self) -> bool:
         if self.deck_value > 21:
             if self.ace_card_count >= 1:
                 self.deck_value -= 10
                 self.ace_card_count -= 1
                 print("Changed the value of the ace in your hand from 11 to 1.")
-                print(self.deck_value, "\n")
 
             else:
                 print("YOU HAVE BUSTED! EMPTY THEM POCKETS!")
@@ -57,9 +54,7 @@ class Character:
             else:
                 self.card_suit = sett.spades
 
-            if card[1] in 'joker':
-                self.card_rank = 'J'
-            elif card[1] in 'queen':
+            if card[1] in 'queen':
                 self.card_rank = 'Q'
             elif card[1] in 'king':
                 self.card_rank = 'K'
@@ -109,7 +104,7 @@ class Character:
             print(sett.up_line * 10)
 
         print("\n" * 9)
-        print(self.deck_length)
+        print(f"{self.character_name} hand value: {self.deck_value}")
 
     def kill(self) -> None:
         self.character_deck.clear()
@@ -119,9 +114,9 @@ class Character:
 
 # -------- PLAYER CHILD CLASS -------- #
 class Player(Character):
-    def __init__(self, deck) -> None:
+    def __init__(self, deck, player_name) -> None:
         super().__init__(deck)
-        self.character_name = "player"
+        self.character_name = player_name
         self.chips = {
             "white": 20,
             "blue": 20,
