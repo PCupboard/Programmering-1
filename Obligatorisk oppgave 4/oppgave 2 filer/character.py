@@ -1,4 +1,5 @@
 import settings as sett
+import time
 
 # -------- CHARACTER PARENT CLASS -------- #
 class Character:
@@ -14,6 +15,7 @@ class Character:
         self.deck_length = 0
 
         self.ace_card_count = 0
+        self.value_print_check = 0
 
         self.character_name = "character"
 
@@ -32,14 +34,20 @@ class Character:
     def busted_check(self) -> bool:
         if self.deck_value > 21:
             if self.ace_card_count >= 1:
+                self.value_print_check = 1
                 self.deck_value -= 10
                 self.ace_card_count -= 1
                 print("Changed the value of the ace in your hand from 11 to 1.")
+                print(f"{self.character_name}'s hand value is now {self.deck_value}")
 
             else:
                 print("YOU HAVE BUSTED! EMPTY THEM POCKETS!")
                 self.busted = True
                 return self.busted
+
+        if self.value_print_check == 0:
+            print(f"{self.character_name}'s hand value is {self.deck_value}")
+        self.value_print_check = 0
 
     def draw_card_deck(self) -> None:
         self.deck_length = len(self.character_deck) - 1
@@ -104,7 +112,6 @@ class Character:
             print(sett.up_line * 10)
 
         print("\n" * 9)
-        print(f"{self.character_name} hand value: {self.deck_value}")
 
     def kill(self) -> None:
         self.character_deck.clear()
@@ -131,3 +138,6 @@ class Dealer(Character):
     def __init__(self, deck) -> None:
         super().__init__(deck)
         self.character_name = "dealer"
+
+    def dealer_first_draw(self):
+        print("The dealer draws.")
