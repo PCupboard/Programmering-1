@@ -2,26 +2,32 @@ import os
 import character
 import deck
 import game_instances
-
+import settings as sett
+import time
 
 player_object_list = []
 player_list = []
 
 def hit_or_stand():
     while True:
-        print("What do you want to do?")
+        print("Choose one of the following:")
         print("1) hit\n"
-              "2) stand\n")
+              "2) stand")
         player_choice = input("")
-        if player_choice == "1":
+        if player_choice in "1" or player_choice.lower() in "hit":
             player.hit()
             player.draw_card_deck()
             if player.busted_check():
                 break
 
-        elif player_choice == "2":
+        elif player_choice in "2" or player_choice.lower() in "stand":
             print("You stand")
+            print()
             break
+
+        else:
+            print("Input not recognized, try again")
+            continue
 
 game_start_instance = game_instances.StartingGameInstance()
 your_deck = deck.Deck()
@@ -50,9 +56,6 @@ while True:
     else:
         continue
 
-    #if player_query != "1":
-     #   continue
-
     # This is code after the game has begun
     game_running_instance = game_instances.RunningGameInstance()
 
@@ -60,7 +63,12 @@ while True:
     while True:
         game_running_instance.new_player()
         if game_running_instance.player_name in '':
-            break
+            if not len(player_list) >= 1:
+                print("You need atleast one player to play Blackjack!\n")
+                continue
+
+            else:
+                break
 
         elif game_running_instance.player_name.isalpha():
             player_object_list.append(character.Player(your_deck, game_running_instance.player_name))
@@ -69,25 +77,45 @@ while True:
             continue
 
         else:
-            print("Name rejected")
+            print("Name rejected\n")
             continue
 
-    for player in player_object_list:
-        print(player.character_name)
-    print()
+    print("Players participating in the Blackjack game:")
+    for player_number, player in enumerate(player_object_list, start=1):
+        player.print_player_name(player_number)
 
     # Hver spiller satser sine chips
     # TODO: Her er ingenting gjort ennå, men skal komme senere. Fokuserer på selve spillet for nå.
 
-    # Blackjack spillet begynner herfra;
+    # Blackjack spillet begynner herfra
     os.system('cls')
+
     dealer.hit()
-    print("The dealer's card")
+    dealer.first_draw()
     dealer.draw_card_deck()
+    dealer.busted_check()
+    print()
 
-    for player in player_object_list:
-        print(f"{player.character_name}'s turn to draw")
+    number_of_players = len(player_list)
+
+    for player_number, player in enumerate(player_object_list, start=1):
+        print(f"{sett.blue_color}{player.character_name}'s{sett.reset_color} turn to draw")
         hit_or_stand()
+        if number_of_players < player_number:
+            print("Next player's turn:")
 
-    print("All players have done their turn.")
+    print("All players have completed each of their turns!\n")
+    time.sleep(1)
+    print(f"{sett.red_color}{dealer.character_name}{sett.reset_color} will now draw their cards")
+    while True:
+        dealer.hit()
+        dealer.draw_card_deck()
+        dealer.busted_check()
+        print()
+        if dealer.dealer_hit_limit():
+            break
+
+
+    print("THE GAME HAS FINISHED")
     input("")
+    break

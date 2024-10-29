@@ -12,7 +12,7 @@ class Character:
         self.busted = False
 
         self.deck_value = 0
-        self.deck_length = 0
+        self.deck_length_index = 0
 
         self.ace_card_count = 0
         self.value_print_check = 0
@@ -21,9 +21,9 @@ class Character:
 
     def hit(self) -> None:
         self.character_deck.append(self.deck.draw())
-        self.deck_length = len(self.character_deck) - 1
+        self.deck_length_index = len(self.character_deck) - 1
 
-        current_card = self.character_deck[self.deck_length]
+        current_card = self.character_deck[self.deck_length_index]
         self.deck_value = self.deck_value + int(current_card[2])
 
         if current_card[1] == 'ace':
@@ -38,19 +38,30 @@ class Character:
                 self.deck_value -= 10
                 self.ace_card_count -= 1
                 print("Changed the value of the ace in your hand from 11 to 1.")
-                print(f"{self.character_name}'s hand value is now {self.deck_value}")
+                if self.character_name.lower() in 'the dealer':
+                    print(sett.red_color, end='\r')
+                else:
+                    print(sett.blue_color, end='\r')
+
+                print(f"{self.character_name}'s{sett.reset_color} hand value is now {self.deck_value}")
 
             else:
-                print("YOU HAVE BUSTED! EMPTY THEM POCKETS!")
+                print("YOU HAVE BUSTED! EMPTY THEM POCKETS!\n\n")
                 self.busted = True
                 return self.busted
 
         if self.value_print_check == 0:
-            print(f"{self.character_name}'s hand value is {self.deck_value}")
+            if self.character_name.lower() in 'the dealer':
+                print(sett.red_color, end='\r')
+            else:
+                print(sett.blue_color, end='\r')
+
+            print(f"{self.character_name}'s{sett.reset_color} hand value is now {self.deck_value}")
+
         self.value_print_check = 0
 
     def draw_card_deck(self) -> None:
-        self.deck_length = len(self.character_deck) - 1
+        self.deck_length_index = len(self.character_deck) - 1
 
         for card in self.character_deck[::-1]:
             if card[0] in 'hearts':
@@ -100,7 +111,7 @@ class Character:
                 card_map[7].pop(7)
 
             for row in card_map:
-                print(" " * 12 * self.deck_length, end='')
+                print(" " * 13 * self.deck_length_index, end='')
                 for element in row:
                     if element != 0:
                         print(element, end='')
@@ -108,14 +119,18 @@ class Character:
                         print(end=' ')
                 print()
 
-            self.deck_length -= 1
+            #print(f"{card[0]} of {card[1]}")
+            self.deck_length_index -= 1
             print(sett.up_line * 10)
 
-        print("\n" * 9)
+        print("\n" * 8)
+
+        if self.character_name.lower() in 'the dealer':
+            time.sleep(1)
 
     def kill(self) -> None:
         self.character_deck.clear()
-        self.deck_length = 0
+        self.deck_length_index = 0
         self.deck_value = 0
 
 
@@ -123,7 +138,7 @@ class Character:
 class Player(Character):
     def __init__(self, deck, player_name) -> None:
         super().__init__(deck)
-        self.character_name = player_name
+        self.character_name = player_name.title()
         self.chips = {
             "white": 20,
             "blue": 20,
@@ -132,12 +147,27 @@ class Player(Character):
             "pink": 5
         }
 
+    def print_player_name(self, player_number):
+        print(f"Player nr.{player_number} {sett.horizontal_line} {self.character_name}")
+        time.sleep(1)
+
 
 # -------- DEALER CHILD CLASS -------- #
 class Dealer(Character):
     def __init__(self, deck) -> None:
         super().__init__(deck)
-        self.character_name = "dealer"
+        self.character_name = "The dealer"
 
-    def dealer_first_draw(self):
-        print("The dealer draws.")
+    def first_draw(self):
+        print(f"{self.character_name} draws his first card", end='\r')
+        time.sleep(0.5)
+        print(f"{self.character_name} draws his first card..", end='\r')
+        time.sleep(0.5)
+        print(f"{self.character_name} draws his first card...", end='\r')
+        time.sleep(1)
+        print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} first card:            ")
+
+    def dealer_hit_limit(self):
+        if self.deck_value >= 17:
+            print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} final hand value is {self.deck_value}\n")
+            return True

@@ -17,10 +17,10 @@ class StartingGameInstance:
         time.sleep(0.5)
         print("< Welcome To           >", end='\r')
         time.sleep(0.5)
-        print(f"< Welcome To {sett.red_color + self.game_name + sett.white_color} \n\n")
+        print(f"< Welcome To {sett.red_color + self.game_name + sett.reset_color} \n\n")
         time.sleep(1)
         print(f"A Program made by Patrick Jemieljanczyk")
-        time.sleep(2)
+        time.sleep(1)
         os.system('cls')
 
     def start_query(self) -> str:

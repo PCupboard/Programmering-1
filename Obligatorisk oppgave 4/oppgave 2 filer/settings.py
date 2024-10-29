@@ -1,6 +1,6 @@
 # Color variables
 red_color = "\033[31m" # Red Color
-white_color = "\033[39m" # White/Default Color
+reset_color = "\033[39m" # White/Default Color
 blue_color = "\033[34m" # Blue Color
 
 # Unicode symbols for drawing a card
@@ -48,8 +48,6 @@ playing_card_map = [ [top_left_corner,
                        bottom_right_corner] ]
 
 
-##########################################################
-# -------- INFORMATION AND INFORMATIONAL PRINTS -------- #
-##########################################################
-
-
+########################################################
+# -------- VARIABLES AND INFORMATIONAL PRINTS -------- #
+########################################################
