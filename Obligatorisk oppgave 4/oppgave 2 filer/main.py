@@ -31,6 +31,13 @@ def hit_or_stand():
             print("Input not recognized, try again")
             continue
 
+#def strike_through_text(text) -> str:
+ #   result_text = str('')
+#    for letter in text:
+#        result_text = result_text + letter + sett.strike_through
+#
+#    return result_text
+
 game_start_instance = game_instances.StartingGameInstance()
 your_deck = deck.Deck()
 your_deck.build()
@@ -85,10 +92,6 @@ while True:
             print("Name rejected\n")
             continue
 
-    print("Players participating in the Blackjack game:")
-    for player_number, player in enumerate(player_object_list, start=1):
-        player.print_player_name(player_number)
-
     # Hver spiller satser sine chips
     # TODO: Her er ingenting gjort ennå, men skal komme senere. Fokuserer på selve spillet for nå.
 
@@ -118,17 +121,38 @@ while True:
     os.system('cls')
     print(f"{sett.red_color}{dealer.character_name}{sett.reset_color} will now draw the rest of their cards")
     time.sleep(1)
-
+    # THE DEALER PLAYS THEIR TURN
     while True:
+        time.sleep(1)
         dealer.hit()
         dealer.draw_card_deck()
         dealer.hand_value_check()
         time.sleep(1)
-        print()
         if dealer.dealer_hit_limit():
             break
 
+        time.sleep(1)
+        os.system('cls')
 
+    os.system('cls')
     print("THE GAME HAS FINISHED")
+    time.sleep(1)
+    os.system('cls')
+    time.sleep(1)
+    for player_number, player in enumerate(player_object_list, start=1):
+        if player.busted:
+            print(sett.strike_through.join(player.end_score(player_number)))
+            time.sleep(1)
+        else:
+            print(player.end_score(player_number))
+            time.sleep(1)
+
+    for i in range(45):
+        time.sleep(0.075)
+        print(sett.thick_horizontal_line, end='')
+
+    time.sleep(1)
+    dealer.dealer_after_game()
+
     input("")
     break

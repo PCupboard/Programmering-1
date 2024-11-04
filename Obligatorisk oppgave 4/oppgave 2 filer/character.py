@@ -46,6 +46,10 @@ class Character:
                 print(f"{self.character_name}'s{sett.reset_color} hand value is now {self.deck_value}")
 
             else:
+                if self.character_name.lower() in 'the dealer':
+                    print(f"{self.character_name} has busted!\n\n")
+                    return self.busted
+
                 print(f"{self.character_name} has busted! Your wagered chips are now forfeit \n\n")
                 self.busted = True
                 return self.busted
@@ -120,12 +124,16 @@ class Character:
                 print()
 
             self.deck_length_index -= 1
-            print(sett.up_line * 9)
+            print(sett.up_line * 10)
 
         print("\n" * 8)
 
         if self.character_name.lower() in 'the dealer':
             time.sleep(1)
+
+    def chips(self) -> None:
+        pass
+
 
     def kill(self) -> None:
         self.character_deck.clear()
@@ -146,9 +154,11 @@ class Player(Character):
             "pink": 5
         }
 
-    def print_player_name(self, player_number):
-        print(f"Player nr.{player_number} {sett.horizontal_line} {self.character_name}")
-        time.sleep(1)
+    def end_score(self, player_number):
+        end_score = (f"Player nr.{player_number} {sett.horizontal_line} {self.character_name} {sett.thick_horizontal_line} "
+                     f"final hand value: {self.deck_value}")
+
+        return end_score
 
 
 # -------- DEALER CHILD CLASS -------- #
@@ -168,5 +178,9 @@ class Dealer(Character):
 
     def dealer_hit_limit(self):
         if self.deck_value >= 17:
-            print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} final hand value is {self.deck_value}\n")
             return True
+
+    def dealer_after_game(self):
+        print("")
+        print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} final hand value is "
+              f"{sett.magenta_color}{self.deck_value}{sett.reset_color}\n")
