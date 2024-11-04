@@ -8,7 +8,6 @@ class StartingGameInstance:
         self.user_query = ""
         self.game_name = "Blackjack"
 
-        print()
         print("|----------------------|")
         print("<                      >")
         print("|----------------------|")
@@ -42,6 +41,7 @@ class StartingGameInstance:
         time.sleep(0.5)
 
     def introduction(self) -> None:
+        os.system('cls')
         print(f"{self.game_name} is a casino banking game. It is the most widely played casino banking game in the world.\n"
                "It uses a standard deck of 52 cards and is played by around 5 to 9 players at a time.\n"
                "A dealer is facing these players and plays against them.\n"

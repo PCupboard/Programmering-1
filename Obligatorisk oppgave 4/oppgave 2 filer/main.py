@@ -16,8 +16,10 @@ def hit_or_stand():
         player_choice = input("")
         if player_choice in "1" or player_choice.lower() in "hit":
             player.hit()
+            os.system('cls')
             player.draw_card_deck()
-            if player.busted_check():
+            if player.hand_value_check():
+                time.sleep(2)
                 break
 
         elif player_choice in "2" or player_choice.lower() in "stand":
@@ -54,6 +56,9 @@ while True:
             case "4":
                 game_start_instance.quit_game()
     else:
+        continue
+
+    if not player_query in '1':
         continue
 
     # This is code after the game has begun
@@ -93,24 +98,32 @@ while True:
     dealer.hit()
     dealer.first_draw()
     dealer.draw_card_deck()
-    dealer.busted_check()
+    dealer.hand_value_check()
     print()
 
     number_of_players = len(player_list)
 
     for player_number, player in enumerate(player_object_list, start=1):
+        time.sleep(1.5)
+        os.system('cls')
         print(f"{sett.blue_color}{player.character_name}'s{sett.reset_color} turn to draw")
         hit_or_stand()
         if number_of_players < player_number:
             print("Next player's turn:")
 
-    print("All players have completed each of their turns!\n")
     time.sleep(1)
-    print(f"{sett.red_color}{dealer.character_name}{sett.reset_color} will now draw their cards")
+    os.system('cls')
+    print("All players have completed each of their turns!\n")
+    time.sleep(1.5)
+    os.system('cls')
+    print(f"{sett.red_color}{dealer.character_name}{sett.reset_color} will now draw the rest of their cards")
+    time.sleep(1)
+
     while True:
         dealer.hit()
         dealer.draw_card_deck()
-        dealer.busted_check()
+        dealer.hand_value_check()
+        time.sleep(1)
         print()
         if dealer.dealer_hit_limit():
             break

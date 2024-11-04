@@ -31,7 +31,7 @@ class Character:
         else:
             pass
 
-    def busted_check(self) -> bool:
+    def hand_value_check(self) -> bool:
         if self.deck_value > 21:
             if self.ace_card_count >= 1:
                 self.value_print_check = 1
@@ -46,7 +46,7 @@ class Character:
                 print(f"{self.character_name}'s{sett.reset_color} hand value is now {self.deck_value}")
 
             else:
-                print("YOU HAVE BUSTED! EMPTY THEM POCKETS!\n\n")
+                print(f"{self.character_name} has busted! Your wagered chips are now forfeit \n\n")
                 self.busted = True
                 return self.busted
 
@@ -119,9 +119,8 @@ class Character:
                         print(end=' ')
                 print()
 
-            #print(f"{card[0]} of {card[1]}")
             self.deck_length_index -= 1
-            print(sett.up_line * 10)
+            print(sett.up_line * 9)
 
         print("\n" * 8)
 
