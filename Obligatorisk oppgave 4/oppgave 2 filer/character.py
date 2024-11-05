@@ -38,16 +38,13 @@ class Character:
                 self.deck_value -= 10
                 self.ace_card_count -= 1
                 print("Changed the value of the ace in your hand from 11 to 1.")
-                if self.character_name.lower() in 'the dealer':
-                    print(sett.red_color, end='\r')
-                else:
-                    print(sett.blue_color, end='\r')
-
+                character_name_colour_change(self.character_name)
                 print(f"{self.character_name}'s{sett.reset_color} hand value is now {self.deck_value}")
 
             else:
                 if self.character_name.lower() in 'the dealer':
                     print(f"{self.character_name} has busted!\n\n")
+                    self.busted = True
                     return self.busted
 
                 print(f"{self.character_name} has busted! Your wagered chips are now forfeit \n\n")
@@ -55,10 +52,7 @@ class Character:
                 return self.busted
 
         if self.value_print_check == 0:
-            if self.character_name.lower() in 'the dealer':
-                print(sett.red_color, end='\r')
-            else:
-                print(sett.blue_color, end='\r')
+            character_name_colour_change(self.character_name)
 
             print(f"{self.character_name}'s{sett.reset_color} hand value is now {self.deck_value}")
 
@@ -135,7 +129,7 @@ class Character:
         pass
 
 
-    def kill(self) -> None:
+    def clear_hand(self) -> None:
         self.character_deck.clear()
         self.deck_length_index = 0
         self.deck_value = 0
@@ -161,7 +155,7 @@ class Player(Character):
                      f"{sett.thick_horizontal_line} final hand value: {self.deck_value}")
         return self.end_score_print
 
-    def calculate_end_result(self, dealer_hand_value):
+    def calculate_end_result(self, dealer_hand_value,  dealer_busted_bool):
         if self.deck_value > 21:
             self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}BUSTED{sett.reset_color}"
                                                                                                          "                                        ")
@@ -170,8 +164,8 @@ class Player(Character):
             self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.yellow_color}TIE{sett.reset_color}"
                                                                                                          "                                        ")
 
-        elif self.deck_value < dealer_hand_value:
-            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.magenta_color}LOST{sett.reset_color}"
+        elif self.deck_value < dealer_hand_value and not dealer_busted_bool:
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}LOST{sett.reset_color}"
                                                                                                          "                                      ")
 
         else:
@@ -204,3 +198,12 @@ class Dealer(Character):
         print("")
         print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} final hand value is "
               f"{sett.magenta_color}{self.deck_value}{sett.reset_color}\n")
+
+    def dealer_final_print(self):
+        pass
+
+def character_name_colour_change(character_name):
+    if character_name.lower() in 'the dealer':
+        print(sett.red_color, end='\r')
+    else:
+        print(sett.blue_color, end='\r')

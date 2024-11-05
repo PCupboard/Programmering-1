@@ -2,13 +2,45 @@ from os import system
 from time import sleep
 import character
 import deck
-import game_instances
+import game_instance
 import settings as sett
 
 player_object_list = []
-#player_list = []
+
+def add_new_players():
+    while True:
+        game_instance_object.new_player()
+        if game_instance_object.player_name.strip() in '':
+            if len(player_object_list) >= 1:
+                break
+
+            else:
+                print(f"{sett.magenta_color}You need atleast one player to play Blackjack!{sett.reset_color}\n")
+                continue
+
+        elif len(game_instance_object.player_name) > 64:
+            print(f"{sett.magenta_color}This name is too long!{sett.reset_color}\n")
+            continue
+
+        elif game_instance_object.player_name.isalpha():
+            player_object_list.append(character.Player(your_deck, game_instance_object.player_name))
+            print(f"{sett.green_color}Name added to list of participating players{sett.reset_color}\n")
+            sleep(0.5)
+            continue
+
+        else:
+            print(f"{sett.red_color}Name rejected!{sett.reset_color}\n")
+            continue
 
 def hit_or_stand():
+    for counting_variable in range(2):
+        player.hit()
+    player.draw_card_deck()
+    sleep(1)
+    player.hand_value_check()
+    sleep(1)
+    print()
+
     while True:
         print("Choose one of the following:")
         print("1) hit\n"
@@ -17,10 +49,15 @@ def hit_or_stand():
         if player_choice in "1" or player_choice.lower() in "hit":
             player.hit()
             system('cls')
+            sleep(1)
             player.draw_card_deck()
+            sleep(1)
             if player.hand_value_check():
                 sleep(2)
                 break
+            else:
+                sleep(1)
+                print()
 
         elif player_choice in "2" or player_choice.lower() in "stand":
             print("You stand")
@@ -31,54 +68,24 @@ def hit_or_stand():
             print("Input not recognized, try again")
             continue
 
-def add_new_players():
-    while True:
-        game_running_instance.new_player()
-        if game_running_instance.player_name.strip() in '':
-            if len(player_object_list) >= 1:
-                break
-
-            else:
-                print("You need atleast one player to play Blackjack!\n")
-                continue
-
-        elif len(game_running_instance.player_name) > 64:
-            print("This name is too long!\n")
-            continue
-
-        elif game_running_instance.player_name.isalpha():
-            player_object_list.append(character.Player(your_deck, game_running_instance.player_name))
-            #player_list.append(game_running_instance.player_name)
-            print(f"{sett.green_color}Name added to list of participating players{sett.reset_color}\n")
-            sleep(1)
-            continue
-
-        else:
-            print("Name rejected!\n")
-            continue
-
-game_start_instance = game_instances.StartingGameInstance()
+game_instance_object = game_instance.GameInstance()
 your_deck = deck.Deck()
-your_deck.build()
-your_deck.shuffle()
-
-dealer = character.Dealer(your_deck)
-
 
 while True:
+    dealer = character.Dealer(your_deck)
     # This is where the pre-main game loop is stationed
-    player_query = game_start_instance.start_query()
+    player_query = game_instance_object.start_query()
 
-    if game_instances.check_for_int(player_query):
+    if game_instance.check_for_int(player_query):
         match player_query:
             case "1":
-                game_start_instance.start_game()
+                game_instance_object.start_game()
             case "2":
-                game_start_instance.introduction()
+                game_instance_object.introduction()
             case "3":
-                game_start_instance.settings()
+                game_instance_object.settings()
             case "4":
-                game_start_instance.quit_game()
+                game_instance_object.quit_game()
     else:
         continue
 
@@ -86,11 +93,13 @@ while True:
         break
 
 
-game_running_instance = game_instances.RunningGameInstance()
-
-
 while True:
     # This is where the main game loop is stationed
+    your_deck.build()
+    your_deck.shuffle()
+
+    print(player_object_list)
+
     # Adding new players
     if not player_object_list:
         add_new_players()
@@ -101,7 +110,7 @@ while True:
     # TODO: Her er ingenting gjort ennå, men skal komme senere. Fokuserer på selve spillet for nå.
 
     # The Blackjack game begins from here
-    system('cls')
+    #system('cls')
 
     dealer.hit()
     dealer.first_draw()
@@ -139,7 +148,7 @@ while True:
         system('cls')
 
     system('cls')
-    print("THE GAME HAS FINISHED")
+    print("")
     sleep(1)
     system('cls')
     sleep(1)
@@ -155,17 +164,27 @@ while True:
     sleep(1)
     dealer.dealer_after_game()
 
-    print(sett.up_line * (number_of_players + 3), end="")
+    print(sett.up_line * (number_of_players + 3), end='')
     for player_number, player in enumerate(player_object_list, start=1):
         sleep(1.5)
-        print(player.calculate_end_result(dealer.deck_value))
+        print(player.calculate_end_result(dealer.deck_value, dealer.busted))
 
-    sleep(5)
+    print("\n")
+    sleep(4)
+    input("")
     system('cls')
 
-    if game_running_instance.play_again_query():
+    your_deck.destroy_deck()
+    dealer.clear_hand()
+
+    # If the if-statement evaluates to true, the game restarts with the same players and their updated chips
+    # If false, the game restarts and asks for new players. (The chips do not save)
+    if game_instance_object.play_again_query():
+        for player in player_object_list:
+            player.clear_hand()
         continue
 
     else:
-        player_object_list.clear()
+        del player_object_list
+        player_object_list = []
         continue
