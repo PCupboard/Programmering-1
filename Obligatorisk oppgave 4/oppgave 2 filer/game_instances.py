@@ -1,6 +1,6 @@
 import settings as sett
-import time
-import os
+from time import sleep
+from os import system
 
 # ----- STARTING GAME INSTANCE CLASS ----- #
 class StartingGameInstance:
@@ -11,16 +11,16 @@ class StartingGameInstance:
         print("|----------------------|")
         print("<                      >")
         print("|----------------------|")
-        time.sleep(1)
+        sleep(1)
         print(f"{sett.up_line + sett.up_line}< Welcome              >", end='\r')
-        time.sleep(0.5)
+        sleep(0.5)
         print("< Welcome To           >", end='\r')
-        time.sleep(0.5)
+        sleep(0.5)
         print(f"< Welcome To {sett.red_color + self.game_name + sett.reset_color} \n\n")
-        time.sleep(1)
+        sleep(1)
         print(f"A Program made by Patrick Jemieljanczyk")
-        time.sleep(1)
-        os.system('cls')
+        sleep(1)
+        system('cls')
 
     def start_query(self) -> str:
         print("\nYou have four options:")
@@ -34,14 +34,14 @@ class StartingGameInstance:
 
     def start_game(self) -> None:
         print(f"Starting {self.game_name}.", sett.up_line)
-        time.sleep(0.5)
+        sleep(0.5)
         print(f"Starting {self.game_name}..", sett.up_line)
-        time.sleep(0.5)
+        sleep(0.5)
         print(f"Starting {self.game_name}...\n")
-        time.sleep(0.5)
+        sleep(0.5)
 
     def introduction(self) -> None:
-        os.system('cls')
+        system('cls')
         print(f"{self.game_name} is a casino banking game. It is the most widely played casino banking game in the world.\n"
                "It uses a standard deck of 52 cards and is played by around 5 to 9 players at a time.\n"
                "A dealer is facing these players and plays against them.\n"
@@ -64,16 +64,35 @@ class StartingGameInstance:
 
     def quit_game(self) -> None:
         print(f"Quitting {self.game_name}")
-        time.sleep(0.2)
+        sleep(0.2)
         exit()
 
 # ----- RUNNING GAME INSTANCE CLASS ----- #
 class RunningGameInstance:
     def __init__(self):
         self.player_name = ""
+        self.user_query = ""
+        self.game_name = "Blackjack"
 
     def new_player(self) -> None:
         self.player_name = input("Enter name of the new player: ")
+
+    def play_again_query(self) -> bool:
+        print("Do you want to play again? (y/n)")
+        self.user_query = input("")
+        if self.user_query in "y" or "yes":
+            print("Do you want to continue with the same characters (y/n)")
+            user_input = input("")
+
+            if user_input in "y" or "yes":
+                return True
+
+            else:
+                return False
+
+        else:
+            sleep(0.2)
+            exit()
 
 
 def check_for_int(player_input) -> bool:

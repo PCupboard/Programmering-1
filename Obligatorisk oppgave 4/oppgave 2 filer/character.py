@@ -1,5 +1,5 @@
 import settings as sett
-import time
+from time import sleep
 
 # -------- CHARACTER PARENT CLASS -------- #
 class Character:
@@ -129,7 +129,7 @@ class Character:
         print("\n" * 8)
 
         if self.character_name.lower() in 'the dealer':
-            time.sleep(1)
+            sleep(1)
 
     def chips(self) -> None:
         pass
@@ -139,6 +139,7 @@ class Character:
         self.character_deck.clear()
         self.deck_length_index = 0
         self.deck_value = 0
+        self.ace_card_count = 0
 
 
 # -------- PLAYER CHILD CLASS -------- #
@@ -146,6 +147,7 @@ class Player(Character):
     def __init__(self, deck, player_name) -> None:
         super().__init__(deck)
         self.character_name = player_name.title()
+        self.end_score_print = ""
         self.chips = {
             "white": 20,
             "blue": 20,
@@ -154,11 +156,29 @@ class Player(Character):
             "pink": 5
         }
 
-    def end_score(self, player_number):
-        end_score = (f"Player nr.{player_number} {sett.horizontal_line} {self.character_name} {sett.thick_horizontal_line} "
-                     f"final hand value: {self.deck_value}")
+    def print_end_score(self, player_number):
+        self.end_score_print = (f"Player nr.{player_number} {sett.horizontal_line} {self.character_name} "
+                     f"{sett.thick_horizontal_line} final hand value: {self.deck_value}")
+        return self.end_score_print
 
-        return end_score
+    def calculate_end_result(self, dealer_hand_value):
+        if self.deck_value > 21:
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}BUSTED{sett.reset_color}"
+                                                                                                         "                                        ")
+
+        elif self.deck_value == dealer_hand_value:
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.yellow_color}TIE{sett.reset_color}"
+                                                                                                         "                                        ")
+
+        elif self.deck_value < dealer_hand_value:
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.magenta_color}LOST{sett.reset_color}"
+                                                                                                         "                                      ")
+
+        else:
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}WON{sett.reset_color}"
+                                                                                                         "                                       ")
+
+        return self.end_score_print
 
 
 # -------- DEALER CHILD CLASS -------- #
@@ -169,11 +189,11 @@ class Dealer(Character):
 
     def first_draw(self):
         print(f"{self.character_name} draws his first card", end='\r')
-        time.sleep(0.5)
+        sleep(0.5)
         print(f"{self.character_name} draws his first card..", end='\r')
-        time.sleep(0.5)
+        sleep(0.5)
         print(f"{self.character_name} draws his first card...", end='\r')
-        time.sleep(1)
+        sleep(1)
         print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} first card:            ")
 
     def dealer_hit_limit(self):

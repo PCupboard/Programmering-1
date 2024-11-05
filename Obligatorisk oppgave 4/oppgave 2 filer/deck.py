@@ -1,4 +1,4 @@
-import random
+from random import shuffle
 
 # ---------- DECK CLASS ---------- #
 class Deck:
@@ -33,7 +33,7 @@ class Deck:
         # Happy gambling ;D
 
     def shuffle(self) -> None:
-        random.shuffle(self.deck)
+        shuffle(self.deck)
 
     def draw(self) -> list:
         self.draw_card = (self.deck[0])

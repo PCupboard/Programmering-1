@@ -60,12 +60,13 @@ playing_card_map = [ [top_left_corner,
 # -------- VARIABLES AND INFORMATIONAL PRINTS -------- #
 ########################################################
 
+# COLOUR CODED CHIPS ARE DEPRECATED
 # Values for chips
-chips_dictionary = {
-                    'white chips': 1,
-                    'red chips': 5,
-                    'green chips': 25,
-                    'black chips': 100,
-                    'purple chips': 500,
-                    'maroon chips': 1000
-                   }
+#chips_dictionary = {
+#                    'white chips': 1,
+#                    'red chips': 5,
+#                    'green chips': 25,
+#                    'black chips': 100,
+#                    'purple chips': 500,
+#                    'maroon chips': 1000
+#                   }
