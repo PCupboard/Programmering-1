@@ -59,7 +59,9 @@ def hit_or_stand():
             player.draw_card_deck()
             sleep(1)
             if player.hand_value_check():
-                sleep(2)
+                sleep(1.5)
+                print("\nPress enter to continue...")
+                input()
                 break
             else:
                 sleep(1)

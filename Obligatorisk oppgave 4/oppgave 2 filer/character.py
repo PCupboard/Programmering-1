@@ -33,10 +33,14 @@ class Character:
             self.ace_card_count += 1
 
     def hand_value_check(self) -> bool:
+        if self.character_name.lower() != 'the dealer':
+            character_name_string = f"{sett.blue_color}{self.character_name}{sett.reset_color}"
+        else:
+            character_name_string = f"{sett.red_color}{self.character_name}{sett.reset_color}"
+
         if self.deck_value == 21 and len(self.character_deck) == 2:
             self.blackjack = True
             blackjack_string = f"{sett.green_color}blackjack{sett.reset_color}"
-            character_name_string = f"{character_name_colour_change(self.character_name)}{sett.reset_color}"
 
             match randrange(1, 7):
                 case 1:
@@ -65,8 +69,6 @@ class Character:
                 busted_string = f"{sett.red_color}busted{sett.reset_color}"
                 busts_string = busted_string.replace("busted", "busts")
 
-                character_name_string = f"{character_name_colour_change(self.character_name)}{sett.reset_color}"
-
                 if self.deck_value >= 29:
                     print(f"{character_name_string} {busted_string} with a hand value"
                           f" of {sett.magenta_color}{self.deck_value}{sett.reset_color}, impressive!")
@@ -76,7 +78,7 @@ class Character:
                         case 1:
                             print(f"{character_name_string} lost their wagered chips because of a {busted_string.replace("busted", "bust")}!")
                         case 2:
-                            print(f"{sett.reset_color}Comet sighted, unfortunately it {busted_string} {character_name_string}!")
+                            print(f"Comet sighted, unfortunately it {busted_string} {character_name_string}!")
                         case 3:
                             print(f"{character_name_string} lamentably {busts_string}!")
                         case 4:
@@ -86,16 +88,15 @@ class Character:
                         case 6:
                             print(f"{character_name_string} disastrously {busts_string}!")
                         case 7:
-                            print(f"{sett.reset_color}'I am a hitter not a quitter' is not always the best mantra to live by,"
+                            print(f"'I am a hitter not a quitter' is not always the best mantra to live by,"
                                   f" as {character_name_string} has {busted_string}!")
                 return True
 
         if self.deck_value == 21:
-            print(f"{character_name_colour_change(self.character_name)}{sett.reset_color} "
-                  f"has achieved a hand value of {sett.green_color}21{sett.reset_color}!")
+            print(f"{character_name_string} has achieved a hand value of {sett.green_color}21{sett.reset_color}!")
             return True
 
-        print(f"{character_name_colour_change(self.character_name)}'s{sett.reset_color} hand value is now {self.deck_value}")
+        print(f"{character_name_string}'s hand value is now {self.deck_value}")
 
 
     def draw_card_deck(self) -> None:
@@ -263,12 +264,3 @@ class Dealer(Character):
 
     def dealer_final_print(self):
         pass
-
-
-def character_name_colour_change(character_name) -> str:
-    if character_name.lower() in 'the dealer':
-        print(sett.red_color, end='\r')
-    else:
-        print(sett.blue_color, end='\r')
-
-    return character_name
