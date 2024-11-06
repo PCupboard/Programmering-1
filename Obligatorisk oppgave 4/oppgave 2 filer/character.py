@@ -1,5 +1,6 @@
 import settings as sett
 from time import sleep
+from random import randrange
 
 # -------- CHARACTER PARENT CLASS -------- #
 class Character:
@@ -10,12 +11,14 @@ class Character:
         self.card_suit = 0
 
         self.busted = False
+        self.blackjack = False
 
         self.deck_value = 0
         self.deck_length_index = 0
 
+        self.chips = 0
+
         self.ace_card_count = 0
-        self.value_print_check = 0
 
         self.character_name = "character"
 
@@ -28,35 +31,72 @@ class Character:
 
         if current_card[1] == 'ace':
             self.ace_card_count += 1
-        else:
-            pass
 
     def hand_value_check(self) -> bool:
-        if self.deck_value > 21:
+        if self.deck_value == 21 and len(self.character_deck) == 2:
+            self.blackjack = True
+            blackjack_string = f"{sett.green_color}blackjack{sett.reset_color}"
+            character_name_string = f"{character_name_colour_change(self.character_name)}{sett.reset_color}"
+
+            match randrange(1, 7):
+                case 1:
+                    print(f"{character_name_string} has been blessed with a {blackjack_string}!")
+                case 2:
+                    print(f"{character_name_string} has been endowed with a {blackjack_string}!")
+                case 3:
+                    print(f"{character_name_string} has been sanctified with a {blackjack_string}!")
+                case 4:
+                    print(f"Comet sighted, fortunately it brought a {blackjack_string} to {character_name_string}!")
+                case 5:
+                    print(f"A {blackjack_string} has been delievered to {character_name_string}!")
+                case 6:
+                    print(f"A {blackjack_string} has been shipped to {character_name_string}!")
+
+            return True
+
+        elif self.deck_value > 21:
             if self.ace_card_count >= 1:
-                self.value_print_check = 1
                 self.deck_value -= 10
                 self.ace_card_count -= 1
                 print("Changed the value of the ace in your hand from 11 to 1.")
-                character_name_colour_change(self.character_name)
-                print(f"{self.character_name}'s{sett.reset_color} hand value is now {self.deck_value}")
 
             else:
-                if self.character_name.lower() in 'the dealer':
-                    print(f"{self.character_name} has busted!\n\n")
-                    self.busted = True
-                    return self.busted
-
-                print(f"{self.character_name} has busted! Your wagered chips are now forfeit \n\n")
                 self.busted = True
-                return self.busted
+                busted_string = f"{sett.red_color}busted{sett.reset_color}"
+                busts_string = busted_string.replace("busted", "busts")
 
-        if self.value_print_check == 0:
-            character_name_colour_change(self.character_name)
+                character_name_string = f"{character_name_colour_change(self.character_name)}{sett.reset_color}"
 
-            print(f"{self.character_name}'s{sett.reset_color} hand value is now {self.deck_value}")
+                if self.deck_value >= 29:
+                    print(f"{character_name_string} {busted_string} with a hand value"
+                          f" of {sett.magenta_color}{self.deck_value}{sett.reset_color}, impressive!")
 
-        self.value_print_check = 0
+                else:
+                    match randrange(1, 8):
+                        case 1:
+                            print(f"{character_name_string} lost their wagered chips because of a {busted_string.replace("busted", "bust")}!")
+                        case 2:
+                            print(f"{sett.reset_color}Comet sighted, unfortunately it {busted_string} {character_name_string}!")
+                        case 3:
+                            print(f"{character_name_string} lamentably {busts_string}!")
+                        case 4:
+                            print(f"{character_name_string} woefully {busts_string}!")
+                        case 5:
+                            print(f"{character_name_string} tragically {busts_string}!")
+                        case 6:
+                            print(f"{character_name_string} disastrously {busts_string}!")
+                        case 7:
+                            print(f"{sett.reset_color}'I am a hitter not a quitter' is not always the best mantra to live by,"
+                                  f" as {character_name_string} has {busted_string}!")
+                return True
+
+        if self.deck_value == 21:
+            print(f"{character_name_colour_change(self.character_name)}{sett.reset_color} "
+                  f"has achieved a hand value of {sett.green_color}21{sett.reset_color}!")
+            return True
+
+        print(f"{character_name_colour_change(self.character_name)}'s{sett.reset_color} hand value is now {self.deck_value}")
+
 
     def draw_card_deck(self) -> None:
         self.deck_length_index = len(self.character_deck) - 1
@@ -125,15 +165,13 @@ class Character:
         if self.character_name.lower() in 'the dealer':
             sleep(1)
 
-    def chips(self) -> None:
-        pass
-
-
-    def clear_hand(self) -> None:
+    def kill(self) -> None:
         self.character_deck.clear()
         self.deck_length_index = 0
         self.deck_value = 0
         self.ace_card_count = 0
+        self.busted = False
+        self.blackjack = False
 
 
 # -------- PLAYER CHILD CLASS -------- #
@@ -142,36 +180,60 @@ class Player(Character):
         super().__init__(deck)
         self.character_name = player_name.title()
         self.end_score_print = ""
-        self.chips = {
-            "white": 20,
-            "blue": 20,
-            "green": 15,
-            "black": 10,
-            "pink": 5
-        }
+        self.wagered_chips = 0
 
-    def print_end_score(self, player_number):
+    def starting_chips(self) -> None:
+        if self.chips == 0:
+            self.chips = randrange(100, 201, 5)
+
+    def bet_chips(self) -> None:
+        print(f"{self.character_name} currently has {sett.cyan_color}{self.chips}{sett.reset_color} chips! "
+              f"how many chips would {self.character_name} like to bet?")
+        while True:
+            self.wagered_chips = input("").strip()
+
+            try:
+                self.wagered_chips = int(self.wagered_chips)
+
+            except ValueError:
+                print("This is not a valid number!")
+                continue
+
+            else:
+                if 0 < self.wagered_chips <= self.chips:
+                    self.chips -= self.wagered_chips
+                    print(f"{self.character_name} has wagered {sett.cyan_color}{self.wagered_chips}{sett.reset_color} chips!")
+                    break
+
+                else:
+                    print(f"{self.character_name} does not possess this amount of chips!")
+                    continue
+
+
+    def print_end_score(self, player_number) -> str:
         self.end_score_print = (f"Player nr.{player_number} {sett.horizontal_line} {self.character_name} "
                      f"{sett.thick_horizontal_line} final hand value: {self.deck_value}")
         return self.end_score_print
 
-    def calculate_end_result(self, dealer_hand_value,  dealer_busted_bool):
+    def calculate_end_result(self, dealer_hand_value,  dealer_busted_bool) -> str:
         if self.deck_value > 21:
             self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}BUSTED{sett.reset_color}"
-                                                                                                         "                                        ")
-
-        elif self.deck_value == dealer_hand_value:
+                                                                                                      "                                        ")
+        elif self.deck_value == dealer_hand_value and not self.blackjack:
+            self.chips += self.wagered_chips
             self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.yellow_color}TIE{sett.reset_color}"
                                                                                                          "                                        ")
-
         elif self.deck_value < dealer_hand_value and not dealer_busted_bool:
             self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}LOST{sett.reset_color}"
                                                                                                          "                                      ")
-
+        elif self.blackjack:
+            self.chips += self.wagered_chips * 3
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}BLACKJACK{sett.reset_color}!"
+                                                                                                         "                                              ")
         else:
+            self.chips += self.wagered_chips * 2
             self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}WON{sett.reset_color}"
                                                                                                          "                                       ")
-
         return self.end_score_print
 
 
@@ -202,8 +264,11 @@ class Dealer(Character):
     def dealer_final_print(self):
         pass
 
-def character_name_colour_change(character_name):
+
+def character_name_colour_change(character_name) -> str:
     if character_name.lower() in 'the dealer':
         print(sett.red_color, end='\r')
     else:
         print(sett.blue_color, end='\r')
+
+    return character_name

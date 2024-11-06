@@ -35,9 +35,14 @@ def add_new_players():
 def hit_or_stand():
     for counting_variable in range(2):
         player.hit()
+
     player.draw_card_deck()
     sleep(1)
-    player.hand_value_check()
+
+    if player.hand_value_check():
+        sleep(2)
+        return
+
     sleep(1)
     print()
 
@@ -46,10 +51,11 @@ def hit_or_stand():
         print("1) hit\n"
               "2) stand")
         player_choice = input("")
-        if player_choice in "1" or player_choice.lower() in "hit":
+        if player_choice.lower() in ["1", "hit"]:
             player.hit()
             system('cls')
-            sleep(1)
+            sleep(0.5)
+            print()
             player.draw_card_deck()
             sleep(1)
             if player.hand_value_check():
@@ -59,13 +65,15 @@ def hit_or_stand():
                 sleep(1)
                 print()
 
-        elif player_choice in "2" or player_choice.lower() in "stand":
+        elif player_choice.lower() in ["2", "stand"]:
             print("You stand")
-            print()
             break
 
         else:
-            print("Input not recognized, try again")
+            print("Input not recognized, try again", end='\r')
+            sleep(1.5)
+            print("                               ")
+            print(sett.up_line * 6)
             continue
 
 game_instance_object = game_instance.GameInstance()
@@ -98,8 +106,6 @@ while True:
     your_deck.build()
     your_deck.shuffle()
 
-    print(player_object_list)
-
     # Adding new players
     if not player_object_list:
         add_new_players()
@@ -110,12 +116,13 @@ while True:
     # TODO: Her er ingenting gjort ennå, men skal komme senere. Fokuserer på selve spillet for nå.
 
     # The Blackjack game begins from here
-    #system('cls')
+    system('cls')
 
     dealer.hit()
     dealer.first_draw()
     dealer.draw_card_deck()
     dealer.hand_value_check()
+    sleep(1)
     print()
 
 
@@ -123,9 +130,8 @@ while True:
         sleep(1.5)
         system('cls')
         print(f"{sett.blue_color}{player.character_name}'s{sett.reset_color} turn to draw")
+        sleep(1)
         hit_or_stand()
-        if number_of_players < player_number:
-            print("Next player's turn:")
 
     sleep(1)
     system('cls')
@@ -134,37 +140,42 @@ while True:
     system('cls')
     print(f"{sett.red_color}{dealer.character_name}{sett.reset_color} will now draw the rest of their cards")
     sleep(1)
+
     # THE DEALER PLAYS THEIR TURN
     while True:
         sleep(1)
         dealer.hit()
+        print()
         dealer.draw_card_deck()
         dealer.hand_value_check()
         sleep(1)
         if dealer.dealer_hit_limit():
             break
 
-        sleep(1)
         system('cls')
 
     system('cls')
-    print("")
-    sleep(1)
+    sleep(0.5)
+    print(f"{dealer.character_name} has finished drawing their cards!", end='\r')
+    sleep(2)
+    print("The end result will now be shown!                          ")
+    sleep(1.5)
     system('cls')
-    sleep(1)
 
     for player_number, player in enumerate(player_object_list, start=1):
         print(player.print_end_score(player_number))
         sleep(1)
 
-    for i in range(40):
-        sleep(0.075)
-        print(sett.thick_horizontal_line, end='')
+    sleep(2)
+    print(sett.thick_horizontal_line * 40, end='')
 
-    sleep(1)
+    sleep(2)
     dealer.dealer_after_game()
+    sleep(2)
 
+    # Sender nåværende linje til å være den første linjen i terminalen.
     print(sett.up_line * (number_of_players + 3), end='')
+
     for player_number, player in enumerate(player_object_list, start=1):
         sleep(1.5)
         print(player.calculate_end_result(dealer.deck_value, dealer.busted))
@@ -175,16 +186,16 @@ while True:
     system('cls')
 
     your_deck.destroy_deck()
-    dealer.clear_hand()
+    dealer.kill()
 
     # If the if-statement evaluates to true, the game restarts with the same players and their updated chips
     # If false, the game restarts and asks for new players. (The chips do not save)
     if game_instance_object.play_again_query():
         for player in player_object_list:
-            player.clear_hand()
+            player.kill()
         continue
 
     else:
-        del player_object_list
-        player_object_list = []
+        player_object_list.clear()
+        system('cls')
         continue

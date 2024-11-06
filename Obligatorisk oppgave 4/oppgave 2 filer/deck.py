@@ -13,6 +13,7 @@ class Deck:
             for rank in self.ranks:
                 self.deck.append([suit, rank])
 
+        # Assigning values to each card
         for card in self.deck:
             if card[1].isnumeric():
                 card.append(card[1])

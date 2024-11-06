@@ -8,7 +8,6 @@ class GameInstance:
         self.user_query = ""
         self.player_name = ""
         self.game_name = "Blackjack"
-        self.user_query_bool = False
 
         print("|----------------------|")
         print("<                      >")
@@ -78,20 +77,20 @@ class GameInstance:
         self.user_query = input("")
         sleep(0.5)
         system('cls')
-        if self.user_query.lower() in "y" or "yes":
+        if self.user_query.lower() in ["y", "yes"]:
             print("Do you want to play the game with the same characters? (y/n)")
             self.user_query = input("")
             print()
 
+            if self.user_query.lower() in ["y", "yes"]:
+                return True
+
+            else:
+                return False
+
         else:
             exit()
 
-        if self.user_query.lower() in "y" or "yes":
-            self.user_query_bool = True
-            return self.user_query_bool
-
-        else:
-            return self.user_query_bool
 
 def check_for_int(player_input) -> bool:
     try:

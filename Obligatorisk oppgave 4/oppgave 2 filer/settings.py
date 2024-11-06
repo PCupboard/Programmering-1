@@ -25,8 +25,10 @@ reset_style = "\033[0m"
 up_line = "\033[A" # Makes the terminal go up one line
 strike_through = "\u0336"
 
-# Unused Unicode symbols
+# Used Unicode symbols for other means
 thick_horizontal_line = "\u2501"
+
+# Unused Unicode symbols
 double_top_left_corner = "\u2554"
 double_top_right_corner = "\u2557"
 double_horizontal_line = "\u2550"
