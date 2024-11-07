@@ -1,5 +1,6 @@
 from os import system
 from time import sleep
+
 import character
 import deck
 import game_instance
@@ -23,7 +24,7 @@ def add_new_players():
             continue
 
         elif game_instance_object.player_name.isalpha():
-            player_object_list.append(character.Player(your_deck, game_instance_object.player_name))
+            player_object_list.append(character.Player(deck, game_instance_object.player_name))
             print(f"{sett.green_color}Name added to list of participating players{sett.reset_color}\n")
             sleep(0.5)
             continue
@@ -49,8 +50,11 @@ def hit_or_stand() -> None:
     while True:
         print("Choose one of the following:")
         print("1) hit\n"
-              "2) stand")
+              "2) stand\n"
+              "3) dealer hand value")
+
         player_choice = input("")
+        print(sett.up_line, end='\r')
         if player_choice.lower() in ["1", "hit"]:
             player.hit()
             system('cls')
@@ -71,44 +75,60 @@ def hit_or_stand() -> None:
             print("You stand")
             break
 
+        elif player_choice.lower() in ["3", "dealer hand value"]:
+            print(f"The {sett.red_color}{dealer.character_name}{sett.reset_color}'s hand possesses "
+                  f"{sett.red_color + dealer.character_deck[0][1] + sett.reset_color} of "
+                  f"{sett.red_color + dealer.character_deck[0][0] + sett.reset_color}", end='\r')
+
+            sleep(2)
+            print("                                                  ", end='')
+            print(sett.up_line * 4, end='\r')
+            continue
+
         else:
+            print(" " * len(player_choice), end='\r')
             print("Input not recognized, try again", end='\r')
             sleep(1.5)
-            print("                               ")
-            print(sett.up_line * 6)
+            print("                               ", end='\r')
+            print(sett.up_line * 4, end='\r')
             continue
 
 game_instance_object = game_instance.GameInstance()
-your_deck = deck.Deck()
+deck = deck.Deck()
+dealer = character.Dealer(deck)
+
 
 while True:
-    dealer = character.Dealer(your_deck)
     # This is where the pre-main game loop is stationed
-    player_query = game_instance_object.start_query()
+    game_instance_object.menu_message()
+    player_query = input("")
 
-    if game_instance.check_for_int(player_query):
-        match player_query:
-            case "1":
-                game_instance_object.start_game()
-            case "2":
-                game_instance_object.introduction()
-            case "3":
-                game_instance_object.settings()
-            case "4":
-                game_instance_object.quit_game()
-    else:
-        continue
+    match player_query:
+        case "1" | "start game":
+            game_instance_object.start_game()
+            break
+        case "2" | "introduction":
+            game_instance_object.introduction()
+        case "3" | "settings":
+            game_instance_object.settings()
+        case "4" | "quit game":
+            game_instance_object.quit_game()
+        case _:
+            print("Input not recognized, try again", end='\r')
+            sleep(1)
+            system('cls')
+            continue
 
-    if player_query in '1':
-        break
+    if player_query.lower() != ["1", "start game"]:
+        system('cls')
 
 
 while True:
     # This is where the main game loop is stationed
 
     # Building and shuffling the card deck
-    your_deck.build()
-    your_deck.shuffle()
+    deck.build()
+    deck.shuffle()
 
     # If player_object_list is empty
     if not player_object_list:
@@ -183,7 +203,7 @@ while True:
         sleep(0.05)
         print(sett.thick_horizontal_line, end='')
 
-    sleep(2)
+    sleep(1)
     dealer.dealer_after_game()
     sleep(2)
 
@@ -199,7 +219,7 @@ while True:
     input("")
     system('cls')
 
-    your_deck.destroy_deck()
+    deck.destroy_deck()
     dealer.kill()
 
     # If the if-statement evaluates to true, the game restarts with the same players and their updated chips

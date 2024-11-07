@@ -189,7 +189,7 @@ class Player(Character):
             self.chips = randrange(100, 201, 5)
 
     def bet_chips(self) -> None:
-        print(f"{self.character_name} currently has {sett.cyan_color}{self.chips}{sett.reset_color} chips! "
+        print(f"{self.character_name} currently has {sett.cyan_color}{self.chips}{sett.reset_color} chips!\n"
               f"how many chips would {self.character_name} like to bet?")
         while True:
             self.wagered_chips = input("").strip()
@@ -245,7 +245,7 @@ class Player(Character):
         elif self.blackjack:
             self.chips += self.wagered_chips * 3
             self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}BLACKJACK{sett.reset_color}! "
-                                                                                                        f"| {sett.green_color}+{self.wagered_chips * 3}"
+                                                                                                        f"| {sett.green_color}+{self.wagered_chips * 2}"
                                                                                                         f"{sett.reset_color} chips                     ")
         else:
             self.chips += self.wagered_chips * 2

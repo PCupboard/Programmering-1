@@ -23,15 +23,12 @@ class GameInstance:
         sleep(1)
         system('cls')
 
-    def start_query(self) -> str:
-        print("\nYou have four options:")
+    def menu_message(self) -> None:
+        print("You have four options:")
         print(f"1) Start Game -- Starts {self.game_name}")
         print(f"2) Information -- Gives additional information on {self.game_name}")
         print(f"3) Settings -- Opens the settings menu for {self.game_name}")
         print(f"4) Quit Game -- Exits {self.game_name}\n")
-
-        self.user_query = input("Which option will you choose: ")
-        return self.user_query
 
     def start_game(self) -> None:
         print(f"Starting {self.game_name}.", sett.up_line)
@@ -57,12 +54,14 @@ class GameInstance:
                "If the value of your hand ends up being higher than 21.\n"
              )
 
-        print("Go back to main menu:")
+        print("Press enter to go back to the main menu")
         self.user_query = input("")
 
 
     def settings(self):
         print(f"WIP feature for {self.game_name}\n")
+        print("Press enter to go back to the main menu")
+        self.user_query = input("")
 
     def quit_game(self) -> None:
         print(f"Quitting {self.game_name}")
@@ -90,18 +89,3 @@ class GameInstance:
 
         else:
             exit()
-
-
-def check_for_int(player_input) -> bool:
-    try:
-        player_input = int(player_input)
-
-    except ValueError:
-        print("This is not a number, try again\n\n")
-
-    else:
-        if 0 < player_input < 5:
-            return True
-        else:
-            print("Number not recognized, try again\n\n")
-            return False
