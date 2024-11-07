@@ -180,6 +180,7 @@ class Player(Character):
     def __init__(self, deck, player_name) -> None:
         super().__init__(deck)
         self.character_name = player_name.title()
+        self.character_name = f"{sett.blue_color}{self.character_name}{sett.reset_color}"
         self.end_score_print = ""
         self.wagered_chips = 0
 
@@ -197,17 +198,28 @@ class Player(Character):
                 self.wagered_chips = int(self.wagered_chips)
 
             except ValueError:
-                print("This is not a valid number!")
+                self.wagered_chips = str(self.wagered_chips)
+                print("This is not a valid number, try again", end='\r')
+                sleep(1.5)
+                print("                                     ", end='\r')
+                print(sett.up_line, end='\r')
+                print(" " * len(self.wagered_chips), end='\r')
                 continue
 
             else:
                 if 0 < self.wagered_chips <= self.chips:
                     self.chips -= self.wagered_chips
                     print(f"{self.character_name} has wagered {sett.cyan_color}{self.wagered_chips}{sett.reset_color} chips!")
+                    sleep(1.5)
                     break
 
                 else:
-                    print(f"{self.character_name} does not possess this amount of chips!")
+                    self.wagered_chips = str(self.wagered_chips)
+                    print(f"{self.character_name} does not possess this amount of chips, try again", end='\r')
+                    sleep(1.5)
+                    print("                                                                       ", end='\r')
+                    print(sett.up_line, end='\r')
+                    print(" " * len(self.wagered_chips), end='\r')
                     continue
 
 
@@ -218,23 +230,28 @@ class Player(Character):
 
     def calculate_end_result(self, dealer_hand_value,  dealer_busted_bool) -> str:
         if self.deck_value > 21:
-            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}BUSTED{sett.reset_color}"
-                                                                                                      "                                        ")
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}BUSTED{sett.reset_color} "
+                                                                                                        f"| {sett.red_color}-{self.wagered_chips}"
+                                                                                                        f"{sett.reset_color} chips            ")
         elif self.deck_value == dealer_hand_value and not self.blackjack:
             self.chips += self.wagered_chips
-            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.yellow_color}TIE{sett.reset_color}"
-                                                                                                         "                                        ")
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.yellow_color}TIE{sett.reset_color} "
+                                                                                                        f"| {sett.yellow_color}0"
+                                                                                                        f"{sett.reset_color} chips            ")
         elif self.deck_value < dealer_hand_value and not dealer_busted_bool:
-            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}LOST{sett.reset_color}"
-                                                                                                         "                                      ")
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.red_color}LOST{sett.reset_color} "
+                                                                                                        f"| {sett.red_color}-{self.wagered_chips}"
+                                                                                                        f"{sett.reset_color} chips               ")
         elif self.blackjack:
             self.chips += self.wagered_chips * 3
-            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}BLACKJACK{sett.reset_color}!"
-                                                                                                         "                                              ")
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}BLACKJACK{sett.reset_color}! "
+                                                                                                        f"| {sett.green_color}+{self.wagered_chips * 3}"
+                                                                                                        f"{sett.reset_color} chips                     ")
         else:
             self.chips += self.wagered_chips * 2
-            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}WON{sett.reset_color}"
-                                                                                                         "                                       ")
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}WON{sett.reset_color} "
+                                                                                                        f"| {sett.green_color}+{self.wagered_chips * 2}"
+                                                                                                        f"{sett.reset_color} chips                     ")
         return self.end_score_print
 
 

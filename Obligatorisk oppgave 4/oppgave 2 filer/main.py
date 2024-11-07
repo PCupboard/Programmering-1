@@ -32,7 +32,7 @@ def add_new_players():
             print(f"{sett.red_color}Name rejected!{sett.reset_color}\n")
             continue
 
-def hit_or_stand():
+def hit_or_stand() -> None:
     for counting_variable in range(2):
         player.hit()
 
@@ -105,21 +105,32 @@ while True:
 
 while True:
     # This is where the main game loop is stationed
+
+    # Building and shuffling the card deck
     your_deck.build()
     your_deck.shuffle()
 
-    # Adding new players
+    # If player_object_list is empty
     if not player_object_list:
+        # Add players
         add_new_players()
 
+        # Give each player their starting amount of chips
+        for player in player_object_list:
+            player.starting_chips()
+
+    sleep(0.5)
+    system('cls')
+
+    # Storing the amount of players in the game
     number_of_players = len(player_object_list)
 
     # Each player bets their chips
-    # TODO: Her er ingenting gjort ennå, men skal komme senere. Fokuserer på selve spillet for nå.
+    for player in player_object_list:
+        player.bet_chips()
+        system('cls')
 
     # The Blackjack game begins from here
-    system('cls')
-
     dealer.hit()
     dealer.first_draw()
     dealer.draw_card_deck()
@@ -127,9 +138,8 @@ while True:
     sleep(1)
     print()
 
-
-    for player_number, player in enumerate(player_object_list, start=1):
-        sleep(1.5)
+    # THE PLAYERS PLAY THEIR TURNS
+    for player in player_object_list:
         system('cls')
         print(f"{sett.blue_color}{player.character_name}'s{sett.reset_color} turn to draw")
         sleep(1)
@@ -168,8 +178,10 @@ while True:
         print(player.print_end_score(player_number))
         sleep(1)
 
-    sleep(2)
-    print(sett.thick_horizontal_line * 40, end='')
+    sleep(1)
+    for line in range(40):
+        sleep(0.05)
+        print(sett.thick_horizontal_line, end='')
 
     sleep(2)
     dealer.dealer_after_game()

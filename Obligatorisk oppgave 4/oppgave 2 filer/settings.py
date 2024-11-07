@@ -28,15 +28,8 @@ strike_through = "\u0336"
 # Used Unicode symbols for other means
 thick_horizontal_line = "\u2501"
 
-# Unused Unicode symbols
-double_top_left_corner = "\u2554"
-double_top_right_corner = "\u2557"
-double_horizontal_line = "\u2550"
-double_bottom_left_corner = "\u255A"
-double_bottom_right_corner = "\u255D"
-double_vertical_line = "\u2551"
-
 # Drawing card
+'''
 playing_card_map = [ [top_left_corner,
                        horizontal_line, horizontal_line, horizontal_line,
                        horizontal_line, horizontal_line, horizontal_line,
@@ -56,19 +49,4 @@ playing_card_map = [ [top_left_corner,
                        horizontal_line, horizontal_line, horizontal_line,
                        horizontal_line, horizontal_line, horizontal_line,
                        bottom_right_corner] ]
-
-
-########################################################
-# -------- VARIABLES AND INFORMATIONAL PRINTS -------- #
-########################################################
-
-# COLOUR CODED CHIPS ARE DEPRECATED
-# Values for chips
-#chips_dictionary = {
-#                    'white chips': 1,
-#                    'red chips': 5,
-#                    'green chips': 25,
-#                    'black chips': 100,
-#                    'purple chips': 500,
-#                    'maroon chips': 1000
-#                   }
+'''
