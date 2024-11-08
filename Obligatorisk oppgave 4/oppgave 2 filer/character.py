@@ -181,20 +181,23 @@ class Character:
 
 # -------- PLAYER CHILD CLASS -------- #
 class Player(Character):
-    def __init__(self, deck, player_name) -> None:
+    def __init__(self, deck, player_name, chips=None) -> None:
         super().__init__(deck)
         self.character_name = player_name.title()
-        self.character_name = f"{sett.blue_color}{self.character_name}{sett.reset_color}"
+        self.character_name_color = f"{sett.blue_color}{self.character_name}{sett.reset_color}"
         self.end_score_print = ""
         self.wagered_chips = 0
 
+        if not chips is None:
+            self.chips = chips
+
     def starting_chips(self) -> None:
         if self.chips == 0:
-            self.chips = randrange(100, 201, 5)
+            self.chips = randrange(100, 151, 2)
 
     def bet_chips(self) -> None:
-        print(f"{self.character_name} currently has {sett.cyan_color}{self.chips}{sett.reset_color} chips!\n"
-              f"how many chips would {self.character_name} like to bet?")
+        print(f"{self.character_name_color} currently has {sett.cyan_color}{self.chips}{sett.reset_color} chips!\n"
+              f"how many chips would {self.character_name_color} like to bet?")
         while True:
             self.wagered_chips = input("").strip()
             print(sett.up_line, end='\r')
@@ -214,10 +217,10 @@ class Player(Character):
             else:
                 if 0 < self.wagered_chips <= self.chips:
                     if self.chips == self.wagered_chips:
-                        print(f"{sett.blue_color}{self.character_name}{sett.reset_color} went {sett.red_color}all in!{sett.reset_color}")
+                        print(f"{sett.blue_color}{self.character_name_color}{sett.reset_color} went {sett.red_color}all in!{sett.reset_color}")
 
                     else:
-                        print(f"{self.character_name} has wagered {sett.cyan_color}{self.wagered_chips}{sett.reset_color} chips!")
+                        print(f"{self.character_name_color} has wagered {sett.cyan_color}{self.wagered_chips}{sett.reset_color} chips!")
 
                     self.chips -= self.wagered_chips
                     sleep(1.5)
@@ -225,7 +228,7 @@ class Player(Character):
 
                 else:
                     self.wagered_chips = str(self.wagered_chips)
-                    print(f"{self.character_name} does not possess this amount of chips, try again", end='\r')
+                    print(f"{self.character_name_color} does not possess this amount of chips, try again", end='\r')
                     sleep(2)
                     print("                                                                       ", end='\r')
                     print(" " * len(self.wagered_chips), end='\r')
@@ -233,7 +236,7 @@ class Player(Character):
 
 
     def print_end_score(self, player_number) -> str:
-        self.end_score_print = (f"Player nr.{player_number} {sett.horizontal_line} {self.character_name} "
+        self.end_score_print = (f"Player nr.{player_number} {sett.horizontal_line} {self.character_name_color} "
                      f"{sett.thick_horizontal_line} final hand value: {self.deck_value}")
         return self.end_score_print
 
@@ -253,7 +256,7 @@ class Player(Character):
                                                                                                         f"{sett.reset_color} chips               ")
         elif self.blackjack:
             self.chips += self.wagered_chips * 3
-            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}BLACKJACK{sett.reset_color}! "
+            self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}BLACKJACK!{sett.reset_color} "
                                                                                                         f"| {sett.green_color}+{self.wagered_chips * 2}"
                                                                                                         f"{sett.reset_color} chips                     ")
         else:

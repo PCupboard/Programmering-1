@@ -48,6 +48,12 @@ def add_new_players():
             print(f"{sett.red_color}Name rejected!{sett.reset_color}\n")
             continue
 
+def load_players(players_info) -> None:
+    for dictionary in players_info:
+        player_object_list.append(character.Player(deck, str(dictionary['name']), int(dictionary['chips'])))
+
+
+
 def hit_or_stand() -> None:
     for counting_variable in range(2):
         player.hit()
@@ -116,17 +122,24 @@ dealer = character.Dealer(deck)
 while True:
     # This is where the pre-main game loop is stationed
     game_instance_object.menu_message()
-    player_query = input("")
+    user_query = input("")
     print(sett.up_line, end='\r')
 
-    match player_query:
+    match user_query:
         case "1" | "start game":
             game_instance_object.start_game()
             break
-        case "2" | "introduction":
+        case "2" | "load game":
+            if not player_object_list:
+                players_dict = game_instance_object.load_game()
+                load_players(players_dict)
+            else:
+                print("You already have players playing the game!")
+                sleep(2)
+                system('cls')
+
+        case "3" | "introduction":
             game_instance_object.introduction()
-        case "3" | "settings":
-            game_instance_object.settings()
         case "4" | "quit game":
             game_instance_object.quit_game()
         case _:
@@ -135,7 +148,7 @@ while True:
             system('cls')
             continue
 
-    if player_query.lower() != ["1", "start game"]:
+    if user_query.lower() != ["1", "start game"]:
         system('cls')
 
 
@@ -154,6 +167,7 @@ while True:
         # Give each player their starting amount of chips
         for player in player_object_list:
             player.starting_chips()
+
 
     sleep(0.5)
     system('cls')
@@ -222,10 +236,10 @@ while True:
     dealer.dealer_after_game()
     sleep(2)
 
-    # Sender nåværende linje til å være den første linjen i terminalen.
+    # Puts the current line to the top of the terminal
     print(sett.up_line * (number_of_players + 3), end='')
 
-    for player_number, player in enumerate(player_object_list, start=1):
+    for player in player_object_list:
         sleep(1.5)
         print(player.calculate_end_result(dealer.deck_value, dealer.busted, dealer.blackjack))
 
@@ -238,54 +252,77 @@ while True:
     deck.destroy_deck()
     dealer.kill()
 
-    # If the if-statement evaluates to true, the game restarts with the same players and their updated chips
-    # If false, the game restarts and asks for new players. (The chips do not save)
+    # Check each player if they have zero chips, if they do, ask what to do about that specific player
+    for player in player_object_list:
+        if player.kill():
+            print(
+                f"{sett.blue_color}{player.character_name}{sett.reset_color} Has {sett.cyan_color}0{sett.reset_color} chips remaining!\n")
+            print(f"what would you like to do?\n"
+                  f"1) Remove {player.character_name} from the game\n"
+                  f"2) Give {player.character_name} new chips")
+
+            while True:
+                user_query = input("")
+                print(sett.up_line, end='\r')
+
+                if user_query in "1":
+                    losing_player_list.append(player)
+                    print(
+                        f"{sett.blue_color}{player.character_name}{sett.reset_color} has been removed from the game!\n")
+                    sleep(1)
+                    system('cls')
+                    break
+
+                elif user_query in "2":
+                    player.starting_chips()
+                    print(
+                        f"{sett.blue_color}{player.character_name}{sett.reset_color} has been given a new set of chips!\n")
+                    sleep(1)
+                    system('cls')
+                    break
+
+                else:
+                    print("Input not recognized, try again", end='\r')
+                    print("                               ")
+                    sleep(0.5)
+                    continue
+
+    for name in player_object_list:
+        if name in losing_player_list:
+            player_object_list.remove(name)
+            losing_player_list.remove(name)
+
+    # Ask the player if they want to play again
     if game_instance_object.play_again_query():
-        for player in player_object_list:
-            if player.kill():
-                print(f"{sett.blue_color}{player.character_name}{sett.reset_color} Has {sett.cyan_color}0{sett.reset_color} chips remaining!\n")
-                print(f"what would you like to do?\n"
-                      f"1) Remove {player.character_name} from the game\n"
-                      f"2) Give {player.character_name} new chips")
+        print("Do you want to play the game with the same characters? (y/n)")
+        user_query = input("")
+        if user_query in "yes":
+            sleep(0.5)
+            for player in player_object_list:
+                game_instance.players_information_dict(player.character_name, player.chips)
+            game_instance.save_game()
+            sleep(0.5)
+            system('cls')
+            sleep(1)
+            print("Restarting the game!")
+            sleep(1.5)
 
-                while True:
-                    player_query = input("")
-                    print(sett.up_line, end='\r')
+        if user_query in "no":
+            # Players are saved here
+            for player in player_object_list:
+                game_instance.players_information_dict(player.character_name, player.chips)
+            game_instance.save_game()
 
-                    if player_query in "1":
-                        losing_player_list.append(player)
-                        print(f"{sett.blue_color}{player.character_name}{sett.reset_color} has been removed from the game!\n")
-                        sleep(1)
-                        system('cls')
-                        break
-
-                    elif player_query in "2":
-                        player.starting_chips()
-                        print(f"{sett.blue_color}{player.character_name}{sett.reset_color} has been given a new set of chips!\n")
-                        sleep(1)
-                        system('cls')
-                        break
-
-                    else:
-                        print("Input not recognized, try again", end='\r')
-                        print("                               ")
-                        sleep(0.5)
-                        continue
-
-        for name in player_object_list:
-            if name in losing_player_list:
-                player_object_list.remove(name)
-                losing_player_list.remove(name)
-
-        sleep(0.5)
-        system('cls')
-        sleep(1)
-        print("Restarting the game!")
-        sleep(1.5)
-
-        continue
+            # The players are removed after being saved
+            player_object_list.clear()
+            system('cls')
+            continue
 
     else:
-        player_object_list.clear()
-        system('cls')
-        continue
+        # Players are saved here
+        for player in player_object_list:
+            game_instance.players_information_dict(player.character_name, player.chips)
+        game_instance.save_game()
+
+        # Quitting program
+        exit()
