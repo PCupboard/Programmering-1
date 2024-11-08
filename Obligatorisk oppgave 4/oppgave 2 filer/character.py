@@ -288,8 +288,17 @@ class Dealer(Character):
 
     def dealer_after_game(self):
         print("")
-        print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} final hand value is "
-              f"{sett.magenta_color}{self.deck_value}{sett.reset_color}\n")
+        if self.blackjack:
+            print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} final hand value is a natural "
+                  f"{sett.magenta_color}{self.deck_value}{sett.reset_color}\n")
+
+        elif self.busted:
+            print(f"{sett.red_color}{self.character_name}{sett.reset_color} busted with a final hand value of "
+                  f"{sett.magenta_color}{self.deck_value}{sett.reset_color}\n")
+
+        else:
+            print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} final hand value is "
+                  f"{sett.magenta_color}{self.deck_value}{sett.reset_color}\n")
 
     def dealer_final_print(self):
         pass

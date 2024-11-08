@@ -132,9 +132,10 @@ while True:
         case "2" | "load game":
             if not player_object_list:
                 players_dict = game_instance_object.load_game()
-                load_players(players_dict)
+                if players_dict:
+                    load_players(players_dict)
             else:
-                print("You already have players playing the game!")
+                print(f"{sett.yellow_color}You already have players in the game!{sett.reset_color}")
                 sleep(2)
                 system('cls')
 

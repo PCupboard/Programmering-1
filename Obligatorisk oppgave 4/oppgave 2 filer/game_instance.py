@@ -1,7 +1,8 @@
 import settings as sett
 from time import sleep
 from os import system, listdir
-import json
+from json import dump, load
+
 
 player_information_dict = []
 
@@ -51,11 +52,13 @@ class GameInstance:
                "At the start of each round, each player place a bet which represents the player's money.\n"
                "The dealer gets initially one card which all players can see the value of.\n"
                "This program plays more after European casinos, therefore the dealer's second card is drawn\n"
-               "only after the players have played their hand.\n"
-               "Each player gets two choices, to either hit or stand. If the player chooses to hit, they will draw a card.\n"
-               "if the player chooses to stand, they will pass their turn to the next player.\n"
+               "only after the players have played their hands.\n"
+               "Each player gets three choices, either hit, stand or show dealer hand value.\n"
+               "If the player chooses to hit, they will draw a card.\n"
+               "If the player chooses to stand, they will pass their turn to the next player.\n"
+               "If the player chooses to show dealer's hand value, they will see the dealer's hand value.\n"
                "Each drawn card includes a value, each drawn card will increase the value of your hand.\n"
-               "If the value of your hand ends up being higher than 21.\n"
+               "If the value of your hand ends up being higher than 21, you will have busted. Avoid this at all costs.\n"
              )
 
         print("Press enter to go back to the main menu")
@@ -63,6 +66,7 @@ class GameInstance:
 
 
     def load_game(self):
+        # Loading of each player's names and chips in a repsective file happens here
         system('cls')
         json_files = []
 
@@ -72,9 +76,9 @@ class GameInstance:
 
         if not json_files:
             print("There are no files to load data from!")
+            sleep(1)
             return
 
-        sleep(1)
 
         print("Available files in the current working directory:")
         for file in json_files:
@@ -89,30 +93,34 @@ class GameInstance:
 
         while True:
             file_name = input("Enter file name: ").lower()
-            sleep(1)
             print(sett.up_line, end='\r')
             print("                 ", end='')
             print(" " * len(file_name), end='\r')
-            if file_name.isalpha():
+
+            if file_name in '':
+                sleep(0.5)
+                break
+
+            elif file_name.isalpha():
                 file_name = file_name.lower() + ".json"
 
             else:
-                print("This is not a valid file name!", end='\r')
+                print(f"{sett.red_color}This is not a valid file name!{sett.reset_color}", end='\r')
                 sleep(1)
                 print("                              ", end='\r')
                 continue
 
             try:
-                read_file = open(file_name, "r")
+                json_data = open(file_name, "r")
 
             except FileNotFoundError:
-                print("File not found! Try again", end='\r')
+                print(f"{sett.magenta_color}File not found!{sett.reset_color}", end='\r')
                 sleep(1)
                 print("                         ", end='\r')
                 continue
 
             else:
-                player_information = json.load(read_file)
+                player_information = load(json_data)
                 print(f"{sett.green_color}File successfully loaded!{sett.reset_color}")
                 sleep(1.5)
                 system('cls')
@@ -159,33 +167,38 @@ def players_information_dict(player_name, player_chips):
 
 
 def save_game():
-    # Save each of the players name and chips in a dictionary?
-    # Then use a different function to load them in?
-    # That function can only be used each time you start the program
-    # So settings will be replaced with load game function
-    # Load game function will be used to load in the dictionary that contains player names and player chips
+    # Saving of each of the remaining players and their repsective chips happens here
+    system('cls')
+    sleep(0.5)
+    print(f"{sett.yellow_color}Saving your characters!{sett.reset_color}")
+    sleep(1)
+    system('cls')
+    sleep(0.5)
 
     print("When writing the file name, the extension is not needed,\n"
-          "only the name with no symbols or spaces is needed.")
+          "only the name with no symbols or spaces is needed.\n")
     sleep(1)
 
     while True:
-        file_name = input("Enter file name: ")
+        file_name = input("Enter file name to save to: ")
 
         if file_name.isalpha():
             file_name = file_name.lower() + ".json"
-            print("File saved!")
+            print(sett.up_line, end='\r')
+            print(" " * len(file_name), end='\r')
+            print(f"{sett.green_color}File saved!{sett.reset_color}", end='\r')
             sleep(1.5)
             break
+
         else:
             print(sett.up_line, end='\r')
             print(" " * len(file_name), end='\r')
             print("Please enter a valid file name.")
-            sleep(0.5)
+            sleep(0.75)
             continue
 
     with open(file_name, 'w') as write_file:
-        json.dump(player_information_dict, write_file, indent=3)
+        dump(player_information_dict, write_file, indent=3)
 
 def load_game():
     pass
