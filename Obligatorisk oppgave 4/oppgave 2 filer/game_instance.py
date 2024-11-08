@@ -1,6 +1,7 @@
 import settings as sett
 from time import sleep
 from os import system
+import json
 
 # ----- GAME INSTANCE CLASS ----- #
 class GameInstance:
@@ -93,10 +94,16 @@ class GameInstance:
             # players should be saved here
             exit()
 
-def save_game(player_name, player_chips):
+def save_game(file_name, player_information):
     # Save each of the players name and chips in a dictionary?
     # Then use a different function to load them in?
     # That function can only be used each time you start the program
     # So settings will be replaced with load game function
     # Load game function will be used to load in the dictionary that contains player names and player chips
+
+
+
+    with open(file_name, 'w') as write_file:
+        json.dump(player_information, write_file, indent=3)
+
     pass
