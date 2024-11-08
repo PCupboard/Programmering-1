@@ -7,8 +7,13 @@ import game_instance
 import settings as sett
 
 player_object_list = []
+losing_player_list = []
 
 def add_new_players():
+    print("You can press enter to stop adding new players!\n"
+          f"You can add up to {sett.magenta_color}8{sett.reset_color} players to the game\n")
+    sleep(1.5)
+
     while True:
         game_instance_object.new_player()
         if game_instance_object.player_name.strip() in '':
@@ -25,8 +30,18 @@ def add_new_players():
 
         elif game_instance_object.player_name.isalpha():
             player_object_list.append(character.Player(deck, game_instance_object.player_name))
-            print(f"{sett.green_color}Name added to list of participating players{sett.reset_color}\n")
+
+            print(f"{sett.green_color}Added {sett.blue_color}{game_instance_object.player_name.title()}{sett.green_color}"
+                  f" to the list of participating players{sett.reset_color}\n")
             sleep(0.5)
+
+            if len(player_object_list) == 8:
+                print(f"You have added {sett.magenta_color}8{sett.reset_color} players to the game!")
+                sleep(1.5)
+                print("The game will now start")
+                sleep(1)
+                break
+
             continue
 
         else:
@@ -102,6 +117,7 @@ while True:
     # This is where the pre-main game loop is stationed
     game_instance_object.menu_message()
     player_query = input("")
+    print(sett.up_line, end='\r')
 
     match player_query:
         case "1" | "start game":
@@ -155,8 +171,7 @@ while True:
     dealer.first_draw()
     dealer.draw_card_deck()
     dealer.hand_value_check()
-    sleep(1)
-    print()
+    sleep(1.5)
 
     # THE PLAYERS PLAY THEIR TURNS
     for player in player_object_list:
@@ -212,10 +227,11 @@ while True:
 
     for player_number, player in enumerate(player_object_list, start=1):
         sleep(1.5)
-        print(player.calculate_end_result(dealer.deck_value, dealer.busted))
+        print(player.calculate_end_result(dealer.deck_value, dealer.busted, dealer.blackjack))
 
-    print("\n")
-    sleep(4)
+
+    sleep(3)
+    print("\n\n\nPress enter to continue...")
     input("")
     system('cls')
 
@@ -226,7 +242,47 @@ while True:
     # If false, the game restarts and asks for new players. (The chips do not save)
     if game_instance_object.play_again_query():
         for player in player_object_list:
-            player.kill()
+            if player.kill():
+                print(f"{sett.blue_color}{player.character_name}{sett.reset_color} Has {sett.cyan_color}0{sett.reset_color} chips remaining!\n")
+                print(f"what would you like to do?\n"
+                      f"1) Remove {player.character_name} from the game\n"
+                      f"2) Give {player.character_name} new chips")
+
+                while True:
+                    player_query = input("")
+                    print(sett.up_line, end='\r')
+
+                    if player_query in "1":
+                        losing_player_list.append(player)
+                        print(f"{sett.blue_color}{player.character_name}{sett.reset_color} has been removed from the game!\n")
+                        sleep(1)
+                        system('cls')
+                        break
+
+                    elif player_query in "2":
+                        player.starting_chips()
+                        print(f"{sett.blue_color}{player.character_name}{sett.reset_color} has been given a new set of chips!\n")
+                        sleep(1)
+                        system('cls')
+                        break
+
+                    else:
+                        print("Input not recognized, try again", end='\r')
+                        print("                               ")
+                        sleep(0.5)
+                        continue
+
+        for name in player_object_list:
+            if name in losing_player_list:
+                player_object_list.remove(name)
+                losing_player_list.remove(name)
+
+        sleep(0.5)
+        system('cls')
+        sleep(1)
+        print("Restarting the game!")
+        sleep(1.5)
+
         continue
 
     else:

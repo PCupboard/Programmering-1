@@ -70,6 +70,7 @@ class GameInstance:
 
     def new_player(self) -> None:
         self.player_name = input("Enter name for the new player: ")
+        print(sett.up_line," " * 30 + " " * len(self.player_name) , end='\r')
 
     def play_again_query(self) -> bool:
         print("Do you want to play again? (y/n)")
