@@ -76,7 +76,7 @@ class Character:
                 else:
                     match randrange(1, 8):
                         case 1:
-                            print(f"{character_name_string} lost their wagered chips because of a {busted_string.replace("busted", "bust")}!")
+                            print(f"{character_name_string} lost their wagered chips because they {busted_string}!")
                         case 2:
                             print(f"Comet sighted, unfortunately it {busted_string} {character_name_string}!")
                         case 3:
@@ -204,11 +204,11 @@ class Player(Character):
 
             except ValueError:
                 self.wagered_chips = str(self.wagered_chips)
-                print("This is not a valid number, try again", end='\r')
-                sleep(1.5)
-                print("                                     ", end='\r')
-                print(sett.up_line, end='\r')
                 print(" " * len(self.wagered_chips), end='\r')
+                print("This is not a valid number, try again", end='\r')
+                sleep(1)
+                print("                                     ", end='\r')
+
                 continue
 
             else:
@@ -226,9 +226,8 @@ class Player(Character):
                 else:
                     self.wagered_chips = str(self.wagered_chips)
                     print(f"{self.character_name} does not possess this amount of chips, try again", end='\r')
-                    sleep(1.5)
+                    sleep(2)
                     print("                                                                       ", end='\r')
-                    print(sett.up_line, end='\r')
                     print(" " * len(self.wagered_chips), end='\r')
                     continue
 
@@ -260,7 +259,7 @@ class Player(Character):
         else:
             self.chips += self.wagered_chips * 2
             self.end_score_print = self.end_score_print.replace(f"final hand value: {self.deck_value}", f"{sett.green_color}WON{sett.reset_color} "
-                                                                                                        f"| {sett.green_color}+{self.wagered_chips * 2}"
+                                                                                                        f"| {sett.green_color}+{self.wagered_chips}"
                                                                                                         f"{sett.reset_color} chips                     ")
         return self.end_score_print
 

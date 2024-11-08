@@ -69,7 +69,7 @@ class GameInstance:
         exit()
 
     def new_player(self) -> None:
-        self.player_name = input("Enter name for the new player: ")
+        self.player_name = input("Enter name for the new player: ").lower()
         print(sett.up_line," " * 30 + " " * len(self.player_name) , end='\r')
 
     def play_again_query(self) -> bool:
@@ -77,16 +77,26 @@ class GameInstance:
         self.user_query = input("")
         sleep(0.5)
         system('cls')
-        if self.user_query.lower() in ["y", "yes"]:
+        if self.user_query.lower() in "yes":
             print("Do you want to play the game with the same characters? (y/n)")
             self.user_query = input("")
             print()
 
-            if self.user_query.lower() in ["y", "yes"]:
+            if self.user_query.lower() in "yes":
                 return True
 
             else:
+                # PLayers should be saved here
                 return False
 
         else:
+            # players should be saved here
             exit()
+
+def save_game(player_name, player_chips):
+    # Save each of the players name and chips in a dictionary?
+    # Then use a different function to load them in?
+    # That function can only be used each time you start the program
+    # So settings will be replaced with load game function
+    # Load game function will be used to load in the dictionary that contains player names and player chips
+    pass
