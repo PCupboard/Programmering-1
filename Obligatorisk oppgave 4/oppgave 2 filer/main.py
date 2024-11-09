@@ -7,45 +7,91 @@ import game_instance
 import settings as sett
 
 player_object_list = []
+player_name_list = []
 losing_player_list = []
 
 def add_new_players():
-    print("You can press enter to stop adding new players!\n"
-          f"You can add up to {sett.magenta_color}8{sett.reset_color} players to the game\n")
-    sleep(1.5)
-
     while True:
+        system('cls')
+        print("You can press enter to stop adding new players!\n"
+              "Type 'players' to print all the players currently in the game!\n"
+              f"You can add up to {sett.yellow_color}8{sett.reset_color} players to the game")
+
+        if len(player_object_list) == 0:
+            print(f"There are currently {sett.magenta_color}{len(player_object_list)}{sett.reset_color} players in the game.\n")
+
+        elif len(player_object_list) == 1:
+            print(f"There is currently {sett.yellow_color}{len(player_object_list)}{sett.reset_color} player in the game.\n")
+
+        else:
+            print(f"There are currently {sett.yellow_color}{len(player_object_list)}{sett.reset_color} players in the game.\n")
+
+        sleep(0.5)
+        removed_player = False
+
         game_instance_object.new_player()
+
+        for player_name in player_name_list:
+            if game_instance_object.player_name == player_name:
+                print(f"{sett.magenta_color}This player is already participating in the game!{sett.reset_color}")
+                sleep(1)
+                removed_player = True
+
+        if removed_player:
+            continue
+
         if game_instance_object.player_name.strip() in '':
             if len(player_object_list) >= 1:
+                sleep(0.5)
+                system('cls')
+                print(f"{sett.yellow_color}The game will now start!{sett.reset_color}")
+                sleep(1)
                 break
 
             else:
-                print(f"{sett.magenta_color}You need atleast one player to play Blackjack!{sett.reset_color}\n")
+                print(f"{sett.magenta_color}You need atleast one player to play Blackjack!{sett.reset_color}")
+                sleep(1)
+                system('cls')
                 continue
 
         elif len(game_instance_object.player_name) > 64:
-            print(f"{sett.magenta_color}This name is too long!{sett.reset_color}\n")
+            print(f"{sett.magenta_color}This name is too long!{sett.reset_color}")
+            sleep(1)
+            system('cls')
             continue
+
+        elif game_instance_object.player_name.strip().lower() == 'players':
+            if player_object_list:
+                for player_f in player_object_list:
+                    print(player_f.character_name)
+                    sleep(1)
+            else:
+                print(f"{sett.magenta_color}There are currently no players in the game!{sett.reset_color}")
+
+            sleep(1)
 
         elif game_instance_object.player_name.isalpha():
             player_object_list.append(character.Player(deck, game_instance_object.player_name))
+            player_name_list.append(game_instance_object.player_name)
 
             print(f"{sett.green_color}Added {sett.blue_color}{game_instance_object.player_name.title()}{sett.green_color}"
-                  f" to the list of participating players{sett.reset_color}\n")
-            sleep(0.5)
+                  f" to the list of participating players{sett.reset_color}", end='\r')
+            sleep(1)
 
             if len(player_object_list) == 8:
-                print(f"You have added {sett.magenta_color}8{sett.reset_color} players to the game!")
+                print(f"You have added the maximum amount of allowed players!")
                 sleep(1.5)
-                print("The game will now start")
+                system('cls')
+                print(f"{sett.yellow_color}The game will now start!{sett.reset_color}")
                 sleep(1)
                 break
 
             continue
 
         else:
-            print(f"{sett.red_color}Name rejected!{sett.reset_color}\n")
+            print(f"{sett.red_color}Name rejected!{sett.reset_color}")
+            sleep(1)
+            system('cls')
             continue
 
 def load_players(players_info) -> None:
@@ -237,7 +283,6 @@ while True:
     dealer.dealer_after_game()
     sleep(2)
 
-    # Puts the current line to the top of the terminal
     print(sett.up_line * (number_of_players + 3), end='')
 
     for player in player_object_list:
