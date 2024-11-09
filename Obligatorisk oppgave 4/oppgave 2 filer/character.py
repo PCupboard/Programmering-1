@@ -299,6 +299,3 @@ class Dealer(Character):
         else:
             print(f"{sett.red_color}{self.character_name}'s{sett.reset_color} final hand value is "
                   f"{sett.magenta_color}{self.deck_value}{sett.reset_color}\n")
-
-    def dealer_final_print(self):
-        pass

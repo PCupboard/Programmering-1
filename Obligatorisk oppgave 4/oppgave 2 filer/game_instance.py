@@ -199,6 +199,3 @@ def save_game():
 
     with open(file_name, 'w') as write_file:
         dump(player_information_dict, write_file, indent=3)
-
-def load_game():
-    pass

@@ -333,10 +333,12 @@ while True:
                     sleep(0.5)
                     continue
 
-    for name in player_object_list:
-        if name in losing_player_list:
-            player_object_list.remove(name)
-            losing_player_list.remove(name)
+    # Removing players from the game
+    for player in losing_player_list:
+        if player in player_object_list:
+            player_object_list.remove(player)
+
+    losing_player_list.clear()
 
     # Ask the player if they want to play again
     if game_instance_object.play_again_query():
