@@ -125,9 +125,12 @@ class GameInstance:
                 sleep(1.5)
                 system('cls')
 
+                json_data.close()
+
                 print("Press enter to go back to the main menu")
                 self.user_query = input("")
                 return player_information
+
 
 
 
@@ -175,27 +178,31 @@ def save_game():
     system('cls')
     sleep(0.5)
 
-    print("When writing the file name, the extension is not needed,\n"
-          "only the name with no symbols or spaces is needed.\n")
-    sleep(1)
-
     while True:
+        print("When writing the file name, the extension is not needed,\n"
+              "only the name with no symbols or spaces is needed.\n")
+        sleep(1)
+
         file_name = input("Enter file name to save to: ")
+        print(sett.up_line, end='\r')
+        print("                              ", end='')
+        print(" " * len(file_name), end='\r')
 
         if file_name.isalpha():
             file_name = file_name.lower() + ".json"
-            print(sett.up_line, end='\r')
-            print(" " * len(file_name), end='\r')
             print(f"{sett.green_color}File saved!{sett.reset_color}", end='\r')
             sleep(1.5)
+            system('cls')
             break
 
         else:
-            print(sett.up_line, end='\r')
-            print(" " * len(file_name), end='\r')
             print("Please enter a valid file name.")
             sleep(0.75)
+            system('cls')
             continue
 
     with open(file_name, 'w') as write_file:
         dump(player_information_dict, write_file, indent=3)
+
+    player_information_dict.clear()
+    write_file.close()

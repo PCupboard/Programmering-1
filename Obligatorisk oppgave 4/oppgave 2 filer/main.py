@@ -340,15 +340,20 @@ while True:
 
     losing_player_list.clear()
 
+    # Adding the players and their chips to a dictionary
+    for player in player_object_list:
+        game_instance.players_information_dict(player.character_name, player.chips)
+
     # Ask the player if they want to play again
     if game_instance_object.play_again_query():
         print("Do you want to play the game with the same characters? (y/n)")
         user_query = input("")
         if user_query in "yes":
             sleep(0.5)
-            for player in player_object_list:
-                game_instance.players_information_dict(player.character_name, player.chips)
+
+            # Players are saved here
             game_instance.save_game()
+
             sleep(0.5)
             system('cls')
             sleep(1)
@@ -357,8 +362,6 @@ while True:
 
         if user_query in "no":
             # Players are saved here
-            for player in player_object_list:
-                game_instance.players_information_dict(player.character_name, player.chips)
             game_instance.save_game()
 
             # The players are removed after being saved
@@ -368,8 +371,6 @@ while True:
 
     else:
         # Players are saved here
-        for player in player_object_list:
-            game_instance.players_information_dict(player.character_name, player.chips)
         game_instance.save_game()
 
         # Quitting program
